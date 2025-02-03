@@ -21,6 +21,7 @@ public class Room {
   private int id;
   private int roomNumber;
   private double pricePerNight;
+  // TODO String type
   private Status status;
 
 }
