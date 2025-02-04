@@ -1,11 +1,15 @@
 package am.itspace.hotelManagement.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
-@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "user")
-@Data
+@Entity
 public class User {
 
     @Id

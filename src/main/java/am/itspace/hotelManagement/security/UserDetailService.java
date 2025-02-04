@@ -1,7 +1,6 @@
 package am.itspace.hotelManagement.security;
 
 import am.itspace.hotelManagement.entity.User;
-import am.itspace.hotelManagement.repository.UserRepository;
 import am.itspace.hotelManagement.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
