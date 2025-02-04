@@ -24,4 +24,10 @@ public class Room {
   // TODO String type
   private Status status;
 
+  public Room(int roomNumber, double pricePerNight, Status status) {
+    this.roomNumber = roomNumber;
+    this.pricePerNight = pricePerNight;
+    this.status = status;
+  }
+
 }

@@ -6,6 +6,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
 
+import java.util.List;
+
 @Setter
 @Getter
 @Entity
@@ -19,5 +21,11 @@ public class Restaurant {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
   private String name;
-  // TODO Dish[] dishes
+  private List<Dish> dishes;
+
+  public Restaurant(String name, List<Dish> dishes) {
+    this.name = name;
+    this.dishes = dishes;
+  }
+
 }
