@@ -2,27 +2,29 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Register</title>
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-<h1>Register</h1>
-<form th:action="@{/register}" method="post">
-    <div>
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required/>
-    </div>
-    <div>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required/>
-    </div>
-    <div>
-        <label for="role">Role:</label>
-        <select id="role" name="role">
-            <option value="ROLE_CUSTOMER">Customer</option>
-            <option value="ROLE_ADMIN">Admin</option>
-            <option value="ROLE_MANAGER">Manager</option>
-        </select>
-    </div>
+<h2>Register</h2>
+<form method="post" action="/register">
+
+    <label>Name:</label>
+    <input type="text" name="name" required>
+
+    <label>Email:</label>
+    <input type="text" name="email" required>
+
+    <label>Password:</label>
+    <input type="password" name="password" required>
+
+    <label>Role:</label>
+    <select name="role">
+        <option th:each="role : ${roles}" th:value="${role}" th:text="${role}"></option>
+    </select>
+
     <button type="submit">Register</button>
 </form>
+
+<p>Already have an account? <a href="/login">Login here</a></p>
 </body>
 </html>
