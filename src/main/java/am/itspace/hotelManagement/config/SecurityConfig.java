@@ -4,7 +4,6 @@ import am.itspace.hotelManagement.security.UserDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -21,24 +20,20 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http
-             .csrf()
-                .disable()
-             .authorizeHttpRequests()
-                .requestMatchers("/login").permitAll()
-                .requestMatchers("/register").permitAll()
-                .requestMatchers(HttpMethod.GET, "/home").authenticated()
-                .requestMatchers("/admin/**").hasAuthority("ADMIN")
-                .anyRequest().permitAll()
-                .and()
-             .formLogin()
-                .loginPage("/login")
-                .loginProcessingUrl("/login")
-                .defaultSuccessUrl("/home", true)
-                .and()
-             .logout()
-                .logoutSuccessUrl("/")
-                .and()
+        return http.csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(auth-> auth
+                        .requestMatchers("/login", "/register").permitAll()
+                        .requestMatchers("/admin/**").hasAuthority("ADMIN")
+                        .requestMatchers("/home").hasAuthority("CUSTOMER")
+                        .anyRequest().authenticated()
+                )
+                .formLogin(httpSecurityFormLoginConfigurer -> httpSecurityFormLoginConfigurer
+                        .loginPage("/login")
+                        .loginProcessingUrl("/login")
+                        .permitAll()
+                ).logout(logoutConfigurer -> logoutConfigurer
+                        .logoutSuccessUrl("/")
+                )
                 .build();
     }
 
