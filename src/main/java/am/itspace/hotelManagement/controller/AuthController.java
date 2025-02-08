@@ -2,7 +2,9 @@ package am.itspace.hotelManagement.controller;
 
 import am.itspace.hotelManagement.entity.User;
 import am.itspace.hotelManagement.entity.UserRole;
+import am.itspace.hotelManagement.security.SpringUser;
 import am.itspace.hotelManagement.service.UserService;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,7 +26,10 @@ public class AuthController {
     }
 
     @GetMapping("/login")
-    public String loginPage() {
+    public String loginPage(@AuthenticationPrincipal SpringUser springUser) {
+        if (springUser != null) {
+            return "redirect:/";
+        }
         return "login";
     }
 
