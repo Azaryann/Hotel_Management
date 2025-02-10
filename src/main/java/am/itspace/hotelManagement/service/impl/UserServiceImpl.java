@@ -1,6 +1,7 @@
 package am.itspace.hotelManagement.service.impl;
 
 import am.itspace.hotelManagement.entity.User;
+import am.itspace.hotelManagement.entity.UserRole;
 import am.itspace.hotelManagement.repository.UserRepository;
 import am.itspace.hotelManagement.service.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,13 +21,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void save(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+    public void registerUser(String username, String password) {
+        if (userRepository.findByUsername(username).isPresent()) {
+            throw new RuntimeException("User already exists!");
+        }
+
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(passwordEncoder.encode(password));
+        user.setUserRole(UserRole.USER);
         userRepository.save(user);
     }
 
     @Override
-    public Optional<User> findByEmail(String email) {
-        return userRepository.findByEmail(email);
+    public Optional<User> findByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 }
