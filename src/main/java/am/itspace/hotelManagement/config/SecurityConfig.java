@@ -22,7 +22,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http
+        http
                 .authorizeHttpRequests(auth-> auth
                         .requestMatchers("/login", "/register").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
@@ -37,10 +37,9 @@ public class SecurityConfig {
                         .permitAll()
                 ).logout(logout -> logout
                         .logoutUrl("/logout")
-                        .logoutSuccessUrl("/login?logout")
                         .permitAll()
-                )
-                .build();
+                );
+                return http.build();
     }
 
     @Bean
