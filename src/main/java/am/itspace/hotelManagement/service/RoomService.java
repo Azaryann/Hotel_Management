@@ -12,5 +12,5 @@ public interface RoomService {
   List<RoomResponse> getAllRooms();
   Optional<RoomResponse> getRoomById(int roomId);
   void deleteRoomById(int roomId);
-  Room updateRoom(RoomRequest roomRequest, int roomId);
+  Room updateRoom(RoomRequest roomRequest);
 }

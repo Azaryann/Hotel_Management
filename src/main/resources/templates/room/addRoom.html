@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Room Page</title>
+</head>
+<body>
+<h2>Add Room Page</h2>
+<form action="/rooms/add" method="post" enctype="multipart/form-data" >
+    Room Type: <input type="text" name="type"><br>
+    Bed Type: <input type="text" name="bedType"><br>
+    Room Number: <input type="number" name="roomNumber"><br>
+    Price Per Night: <input type="number" name="pricePerNight"><br>
+    Add Image <input type="file" name="images" multiple required>
+    Status: <select name="roomStatus">
+    <option value="AVAILABLE">AVAILABLE</option>
+    <option value="OCCUPIED">OCCUPIED</option>
+</select><br>
+    Free Wifi <input type="checkbox" name="isFreeWiF" th:value="${room}"><br>
+    Swimming Pool <input type="checkbox" name="isSwimmingPool" th:value="${room}"><br>
+    Parking <input type="checkbox" name="isParking" th:value="${room}"><br>
+    Fitness Center <input type="checkbox" name="isFitnessCenter" th:value="${room}"><br>
+    <button type="submit">add</button>
+</form>
+</body>
+</html>

@@ -1,17 +1,15 @@
 package am.itspace.hotelManagement.model;
 
-import am.itspace.hotelManagement.enums.Status;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import am.itspace.hotelManagement.enums.RoomStatus;
+import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Setter
 @Getter
 @Entity
-@ToString
-@EqualsAndHashCode
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Room {
@@ -19,15 +17,24 @@ public class Room {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
+  private String type;
+  private String bedType;
   private int roomNumber;
   private double pricePerNight;
-  // TODO String type
-  private Status status;
 
-  public Room(int roomNumber, double pricePerNight, Status status) {
-    this.roomNumber = roomNumber;
-    this.pricePerNight = pricePerNight;
-    this.status = status;
-  }
+  @ElementCollection
+  private List<String> imageUrls;
 
+  @Enumerated(EnumType.STRING)
+  private RoomStatus roomStatus;
+  private boolean isFreeWiFi;
+  private boolean isSwimmingPool;
+  private boolean isParking;
+  private boolean isFitnessCenter;
+
+  // private User customerId
+
+  @ManyToOne
+  @JoinColumn(name = "hotel_id")
+  private Hotel hotel;
 }

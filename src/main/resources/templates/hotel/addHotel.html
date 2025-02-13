@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add hotel Page</title>
+</head>
+<body>
+<h2>Add hotel Page</h2>
+<form action="/hotels/add" method="post">
+    <label>Name: <input type="text" name="name" required/></label><br/>
+    <label>Description: <input type="text" name="description" required/></label><br/>
+    <label>City: <input type="text" name="city" required/></label><br/>
+    <label>Country: <input type="text" name="country" required/></label><br/>
+    <label>Rooms:
+        <select name="rooms" multiple>
+            <option th:each="room : ${rooms}"
+                    th:value="${room.id}"
+                    th:text="${room.pricePerNight}">
+            </option>
+        </select>
+    </label>
+    <br/><br/>
+    <button type="submit">Save Hotel</button>
+</form>
+</body>
+</html>

@@ -1,5 +1,5 @@
 package am.itspace.hotelManagement.enums;
 
-public enum Status {
+public enum RoomStatus {
   AVAILABLE, OCCUPIED
 }
