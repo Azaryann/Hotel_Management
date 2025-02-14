@@ -19,10 +19,10 @@ public class RoomMapper {
       .pricePerNight(room.getPricePerNight())
       .imageUrls(room.getImageUrls())
       .roomStatus(room.getRoomStatus())
-      .isFreeWiFi(room.isFreeWiFi())
-      .isSwimmingPool(room.isSwimmingPool())
-      .isParking(room.isParking())
-      .isFitnessCenter(room.isFitnessCenter())
+      .isFreeWiFi(room.getIsFreeWiFi())
+      .isSwimmingPool(room.getIsSwimmingPool())
+      .isParking(room.getIsParking())
+      .isFitnessCenter(room.getIsFitnessCenter())
       .build();
 
   public static final UnaryOperator<Room> mapToEditRoomResponse = room -> Room.builder()
