@@ -21,9 +21,9 @@ public class RoomResponse {
   private double pricePerNight;
   private List<String> imageUrls;
   private RoomStatus roomStatus;
-  private boolean isFreeWiFi;
-  private boolean isSwimmingPool;
-  private boolean isParking;
-  private boolean isFitnessCenter;
+  private Boolean isFreeWiFi;
+  private Boolean isSwimmingPool;
+  private Boolean isParking;
+  private Boolean isFitnessCenter;
 
 }

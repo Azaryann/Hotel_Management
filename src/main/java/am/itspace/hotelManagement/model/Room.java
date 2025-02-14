@@ -27,10 +27,10 @@ public class Room {
 
   @Enumerated(EnumType.STRING)
   private RoomStatus roomStatus;
-  private boolean isFreeWiFi;
-  private boolean isSwimmingPool;
-  private boolean isParking;
-  private boolean isFitnessCenter;
+  private Boolean isFreeWiFi;
+  private Boolean isSwimmingPool;
+  private Boolean isParking;
+  private Boolean isFitnessCenter;
 
   // private User customerId
 

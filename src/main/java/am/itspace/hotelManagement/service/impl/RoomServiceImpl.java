@@ -37,10 +37,10 @@ public class RoomServiceImpl implements RoomService {
         .pricePerNight(roomRequest.getPricePerNight())
         .imageUrls(imageUrls)
         .roomStatus(roomRequest.getRoomStatus())
-        .isFreeWiFi(false)
-        .isSwimmingPool(false)
-        .isParking(false)
-        .isFitnessCenter(false)
+        .isFreeWiFi(roomRequest.getIsFreeWiFi() != null ? roomRequest.getIsFreeWiFi() : false)
+        .isSwimmingPool(roomRequest.getIsSwimmingPool() != null ? roomRequest.getIsSwimmingPool() : false)
+        .isParking(roomRequest.getIsParking() != null ? roomRequest.getIsParking() : false)
+        .isFitnessCenter(roomRequest.getIsFitnessCenter() != null ? roomRequest.getIsFitnessCenter() : false)
         .build();
     Room savedRoom = this.roomRepository.save(room);
 
