@@ -16,6 +16,8 @@
     <tr th:each="hotel : ${hotels}">
         <td th:text="${hotel.name}"></td>
         <td th:text="${hotel.description}"></td>
+        <td th:text="${hotel.city}"></td>
+        <td th:text="${hotel.country}"></td>
         <th th:if="${hotel.rooms != null and hotel.rooms.size() > 0}" th:text="${hotel.rooms[0].roomNumber}"></th>
         <td th:if="${hotel.rooms != null and hotel.rooms.size() > 0}">  <img th:src="@{/get-image(img=${hotel.rooms[0].imageUrls[0]})} " style="width: 100px" alt="">
 
