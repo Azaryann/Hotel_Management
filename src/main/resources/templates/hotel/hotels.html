@@ -20,9 +20,6 @@
         <td th:text="${hotel.country}"></td>
         <th th:if="${hotel.rooms != null and hotel.rooms.size() > 0}" th:text="${hotel.rooms[0].roomNumber}"></th>
         <td th:if="${hotel.rooms != null and hotel.rooms.size() > 0}">  <img th:src="@{/get-image(img=${hotel.rooms[0].imageUrls[0]})} " style="width: 100px" alt="">
-
-<!--        <td><img th:src="@{/get-image(img=${hotel.room.imageUrls[0]})}" style="width: 100px" alt=""></td>-->
-<!--        <td th:text="${room.roomStatus}"></td>-->
         <td><a th:href="@{/hotels/description(id=${hotel.id})}">Description</a></td>
 <!--        <td> <a th:href="@{/rooms/edit(id=${hotel.room.id})}">Edit</a>-->
 <!--            | <a th:href="@{/rooms/delete(id=${hotel.room.id})}">Delete</a> </td>-->
