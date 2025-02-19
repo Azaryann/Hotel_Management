@@ -32,8 +32,6 @@ public class Room {
   private Boolean isParking;
   private Boolean isFitnessCenter;
 
-  // private User customerId
-
   @ManyToOne
   @JoinColumn(name = "hotel_id")
   private Hotel hotel;
