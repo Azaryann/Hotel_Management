@@ -3,12 +3,17 @@ package am.itspace.hotelManagement.controller;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 @Controller
 @RequestMapping("/")
@@ -17,7 +22,9 @@ public class MainController {
   @Value("${room.image.upload.path}")
   private String uploadPath;
 
-  public String mainPage() {
+
+  @GetMapping
+  public String mainPage(ModelMap modelMap) {
     return "index";
   }
 

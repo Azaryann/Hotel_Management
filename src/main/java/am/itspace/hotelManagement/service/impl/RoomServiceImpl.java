@@ -77,7 +77,6 @@ public class RoomServiceImpl implements RoomService {
     Room room = this.roomRepository.findById(roomRequest.getId()).orElseThrow();
     room.setRoomNumber(roomRequest.getRoomNumber());
     room.setPricePerNight(roomRequest.getPricePerNight());
-
     Room updatedRoom = this.roomRepository.save(room);
 
     return RoomMapper.mapToEditRoomResponse.apply(updatedRoom);

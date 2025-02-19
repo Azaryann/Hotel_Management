@@ -5,12 +5,14 @@ import am.itspace.hotelManagement.dto.response.HotelResponse;
 import am.itspace.hotelManagement.dto.response.RoomResponse;
 import am.itspace.hotelManagement.service.HotelService;
 import am.itspace.hotelManagement.service.RoomService;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.IntStream;
 
 @Controller
 @RequestMapping("/hotels")
@@ -38,8 +40,15 @@ public class HotelController {
   }
 
   @GetMapping
-  public String getAllHotel(ModelMap modelMap){
-    List<HotelResponse> hotels = this.hotelService.getAllHotels();
+  public String getAllHotel(@RequestParam(defaultValue = "1") int pageNumber, @RequestParam(defaultValue = "5") int pageSize, ModelMap modelMap){
+    Page<HotelResponse> hotels = this.hotelService.getAllHotels(pageNumber, pageSize);
+    int totalPage = hotels.getTotalPages();
+    if (totalPage > 0) {
+      List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPage)
+          .boxed()
+          .toList();
+      modelMap.put("pageNumbers", pageNumbers);
+    }
     modelMap.put("hotels", hotels);
     return "hotel/hotels";
   }
@@ -56,6 +65,19 @@ public class HotelController {
     Optional<HotelResponse> optionalHotel = this.hotelService.getHotelById(id);
     optionalHotel.ifPresent(hotel -> modelMap.put("hotel", hotel));
     return "hotel/editHotel";
+  }
+
+  @GetMapping("/filter")
+  public String filterHotel(
+      ModelMap modelMap,
+      @RequestParam(required = false) Boolean isFreeWiFi,
+      @RequestParam(required = false) Boolean isSwimmingPool,
+      @RequestParam(required = false) Boolean isParking,
+      @RequestParam(required = false) Boolean isFitnessCenter
+  ) {
+    List<HotelResponse> hotels = this.hotelService.filterHotel(isFreeWiFi, isSwimmingPool, isParking, isFitnessCenter);
+    modelMap.put("hotels", hotels);
+    return "hotel/filter";
   }
 
   @PostMapping("/edit")

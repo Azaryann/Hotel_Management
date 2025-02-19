@@ -8,7 +8,12 @@ import am.itspace.hotelManagement.model.Room;
 import am.itspace.hotelManagement.repository.HotelRepository;
 import am.itspace.hotelManagement.repository.RoomRepository;
 import am.itspace.hotelManagement.service.HotelService;
+import am.itspace.hotelManagement.specification.HotelSpecification;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,6 +24,7 @@ public class HotelServiceImpl implements HotelService {
 
   private final HotelRepository hotelRepository;
   private final RoomRepository roomRepository;
+
   @Value("${room.image.upload.path}")
   private String uploadPath;
 
@@ -54,12 +60,25 @@ public class HotelServiceImpl implements HotelService {
         .orElseThrow(() -> new RuntimeException("hotel not found"));
   }
 
+
   @Override
-  public List<HotelResponse> getAllHotels() {
-    List<Hotel> hotels = this.hotelRepository.findAll();
+  public Page<HotelResponse> getAllHotels(int page, int size) {
+    Pageable pageable = PageRequest.of(page - 1, size);
+    Page<Hotel> hotels = this.hotelRepository.findAll(pageable);
 
     if (hotels.isEmpty()) throw new RuntimeException("The list of hotel does not exist");
 
+    return hotels.map(HotelMapper.mapToHotelResponse);
+  }
+
+  @Override
+  public List<HotelResponse> filterHotel(Boolean isFreeWiFi, Boolean isSwimmingPool, Boolean isParking, Boolean isFitnessCenter) {
+    Specification<Hotel> specification = Specification
+        .where(HotelSpecification.hasRoomWithFreeWiFi.apply(isFitnessCenter))
+        .or(HotelSpecification.hasRoomWithSwimmingPool.apply(isSwimmingPool))
+        .or(HotelSpecification.hasRoomWithParking.apply(isParking))
+        .or(HotelSpecification.hasRoomWithFitnessCenter.apply(isFitnessCenter));
+    List<Hotel> hotels = this.hotelRepository.findAll(specification);
     return hotels.stream()
         .map(hotel -> HotelMapper.mapToHotelResponse.apply(hotel))
         .toList();
