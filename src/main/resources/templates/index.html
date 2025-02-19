@@ -1,11 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/header.css}">
+    <link rel="stylesheet" th:href="@{/main.css}">
+
     <title>Main</title>
 </head>
 <body>
-<h2>Main page</h2>
-<a href="/rooms/add">Room</a>
+<div th:replace="~{fragment/header::header}"></div>
+<!--<div th:replace="~{fragment/hotel/hotels::hotels}"></div>-->
+<a href="/rooms/add">Room</a><br>
+<a href="/hotels">Hotel</a><br>
 </body>
 </html>
