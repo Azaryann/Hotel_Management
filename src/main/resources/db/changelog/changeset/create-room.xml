@@ -1,0 +1,54 @@
+<databaseChangeLog  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+
+    <changeSet id="create-room" author="SamGyolecyan">
+        <createTable tableName="rooms">
+
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="type" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="bed_type" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="room_status" type="enum('AVAILABLE', 'OCCUPIED')">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="room_number" type="int">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="price_per_night" type="double">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="is_free_wi_fi" type="boolean">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="is_swimming_pool" type="boolean">
+                <constraints nullable="true"/>
+           </column>
+
+            <column name="is_parking" type="boolean">
+                <constraints nullable="true"/>
+           </column>
+
+            <column name="is_fitness_center" type="boolean">
+                <constraints nullable="true"/>
+            </column>
+
+        </createTable>
+    </changeSet>
+
+
+</databaseChangeLog>
