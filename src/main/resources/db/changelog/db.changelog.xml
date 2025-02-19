@@ -23,16 +23,27 @@
 
 
 
-<!--    Fourth migration-->
-<!--    <include file="db/changelog/changeset/add-fk-user.xml"/>-->
+    <!--Fourth migration-->
+    <!--<include file="db/changelog/changeset/add-fk-user.xml"/>-->
 
 
 
-<!--    Fifth migration-->
-<!--    <include file="db/changelog/changeset/add-fk-room.xml"/>-->
+    <!--Fifth migration-->
+    <!--<include file="db/changelog/changeset/add-fk-room.xml"/>-->
 
 
-<!--    Sixth migration-->
-<!--    <include file="db/changelog/changeset/add-fk-hotel.xml"/>-->
+
+    <!--Sixth migration-->
+    <!--<include file="db/changelog/changeset/add-fk-hotel.xml"/>-->
+
+
+
+    <!--Seventh migration-->
+    <!--<include file="db/changelog/changeset/add-column-createdAt-updatedAt-user.xml"/>-->
+
+
+
+    <!--Eighth migration-->
+<!--    <include file="db/changelog/changeset/add-column-createdAt-updatedAt-hotel.xml"/>-->
 
 </databaseChangeLog>
