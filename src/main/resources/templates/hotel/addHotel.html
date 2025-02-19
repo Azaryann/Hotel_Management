@@ -15,7 +15,7 @@
         <select name="rooms" multiple>
             <option th:each="room : ${rooms}"
                     th:value="${room.id}"
-                    th:text="${room.pricePerNight}">
+                    th:text="${room.id + ' ' + room.pricePerNight}">
             </option>
         </select>
     </label>

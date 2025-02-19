@@ -5,33 +5,79 @@
     <title>hotel Page</title>
 </head>
 <body>
-<h2>hotels Page</h2>
-<table border="1">
-    <tr>
-        <th>hotel Name</th>
-        <th>Description</th>
-        <th>City</th>
-        <th>Country</th>
-        <th>Rooms Numbers</th>
-        <th>Room Image</th>
-        <th>Description</th>
-        <th>Edit</th>
-        <th>Delete</th>
-    </tr>
-    <tr th:if="${hotels == null}">
-        <td colspan="7" style="text-align: center;">No hotels available</td>
-    </tr>
-    <tr th:each="hotel : ${hotels}">
-        <td th:text="${hotel.name}"></td>
-        <td th:text="${hotel.description}"></td>
-        <td th:text="${hotel.city}"></td>
-        <td th:text="${hotel.country}"></td>
-        <th th:if="${hotel.rooms != null and hotel.rooms.size() > 0}" th:text="${hotel.rooms[0].roomNumber}"></th>
-        <td th:if="${hotel.rooms != null and hotel.rooms.size() > 0}">  <img th:src="@{/get-image(img=${hotel.rooms[0].imageUrls[0]})} " style="width: 100px" alt="">
-        <td><a th:href="@{/hotels/description(id=${hotel.id})}">Description</a></td>
-        <td> <a th:href="@{/hotels/edit(id=${hotel.id})}">Edit</a>
-            | <a th:href="@{/hotels/delete(id=${hotel.id})}">Delete</a> </td>
-    </tr>
-</table>
+    <h2>hotels Page</h2>
+    <table border="1">
+        <tr>
+            <th>hotel Name</th>
+            <th>Description</th>
+            <th>City</th>
+            <th>Country</th>
+            <th>Rooms Numbers</th>
+            <th>Room Image</th>
+            <th>Description</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+        <tr th:each="hotel : ${hotels}">
+            <td th:text="${hotel.name}"></td>
+            <td th:text="${hotel.description}"></td>
+            <td th:text="${hotel.city}"></td>
+            <td th:text="${hotel.country}"></td>
+            <td th:if="${hotel.rooms != null and !hotel.rooms.isEmpty()}" th:text="${hotel.rooms[0].roomNumber}"></td>
+            <td th:if="${hotel.rooms != null and !hotel.rooms.isEmpty()}">
+                <img th:src="@{/get-image(img=${hotel.rooms[0].imageUrls[0]})} " style="width: 100px" alt="">
+            </td>
+            <td><a th:href="@{/hotels/description(id=${hotel.id})}">Description</a></td>
+            <td> <a th:href="@{/hotels/edit(id=${hotel.id})}">Edit</a>
+                | <a th:href="@{/hotels/delete(id=${hotel.id})}">Delete</a> </td>
+        </tr>
+    </table>
+
+    <form action="hotels/filter" method="get">
+        <label>
+            <input type="checkbox" name="isFreeWiFi" value="true" th:checked="${isFreeWiFi}" />
+            Free WiFi
+        </label>
+        <label>
+            <input type="checkbox" name="isSwimmingPool" value="true" th:checked="${isSwimmingPool}" />
+            Swimming Pool
+        </label>
+        <label>
+            <input type="checkbox" name="isParking" value="true" th:checked="${isParking}" />
+            Parking
+        </label>
+        <label>
+            <input type="checkbox" name="isFitnessCenter" value="true" th:checked="${isFitnessCenter}" />
+            Fitness Center
+        </label>
+        <button type="submit">Filter</button>
+    </form>
+
+<!--    <table border="1">-->
+<!--        <tr>-->
+<!--            <th>Rooms</th>-->
+<!--        </tr>-->
+<!--        <tr th:each="hotel : ${hotels}">-->
+<!--            <td>-->
+<!--                <ul>-->
+<!--                    <li th:each="room : ${hotel.rooms}">-->
+<!--                        Room Number: <span th:text="${room.roomNumber}"></span> |-->
+<!--                        Free WiFi: <input type="checkbox" th:checked="${room.isFreeWiFi}" /> |-->
+<!--                        Swimming Pool: <input type="checkbox" th:checked="${room.isSwimmingPool}" /> |-->
+<!--                        Parking: <input type="checkbox" th:checked="${room.isParking}"/> |-->
+<!--                        Fitness Center: <input type="checkbox" th:checked="${room.isFitnessCenter}" /> |-->
+<!--                    </li>-->
+<!--                </ul>-->
+<!--            </td>-->
+<!--        </tr>-->
+<!--    </table>-->
+
+
+    <div th:if="${hotels.totalPages > 0}" class="pagination"
+         th:each="pageNumber : ${pageNumbers}">
+        <a th:href="@{/hotels(pageSize=${hotels.size}, pageNumber=${pageNumber})}"
+           th:text="${pageNumber}"
+           th:class="${pageNumber==hotels.number + 1} ? active"></a>
+    </div>
 </body>
 </html>
