@@ -1,0 +1,38 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <!-- Include your change sets here -->
+
+
+
+    <!--First migration-->
+    <!--<include file="db/changelog/changeset/create-user.xml"/>-->
+
+
+
+    <!--Second migration-->
+    <!--<include file="db/changelog/changeset/create-hotel.xml"/>-->
+
+
+
+    <!--Third migration-->
+    <!--<include file="db/changelog/changeset/create-room.xml"/>-->
+
+
+
+<!--    Fourth migration-->
+<!--    <include file="db/changelog/changeset/add-fk-user.xml"/>-->
+
+
+
+<!--    Fifth migration-->
+<!--    <include file="db/changelog/changeset/add-fk-room.xml"/>-->
+
+
+<!--    Sixth migration-->
+<!--    <include file="db/changelog/changeset/add-fk-hotel.xml"/>-->
+
+</databaseChangeLog>

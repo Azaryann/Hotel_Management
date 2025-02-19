@@ -1,0 +1,24 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="add-fk-user" author="SamGyolecyan">
+        <addColumn tableName="users">
+            <column name="hotel_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+
+        <addForeignKeyConstraint baseTableName="users"
+                                 baseColumnNames="hotel_id"
+                                 constraintName="fk_user_hotel"
+                                 referencedTableName="hotels"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+
+
+
+</databaseChangeLog>
