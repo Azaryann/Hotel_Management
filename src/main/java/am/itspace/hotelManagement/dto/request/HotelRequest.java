@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class HotelRequest {
-  private int id;
+  private long id;
   private String name;
   private String description;
   private String city;
@@ -21,5 +21,5 @@ public class HotelRequest {
   private double longitude;
   private double latitude;
   private Rate rate;
-  private List<Integer> rooms;
+  private List<Long> rooms;
 }

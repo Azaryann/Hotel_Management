@@ -1,6 +1,9 @@
 package am.itspace.hotelManagement.controller;
 
+import am.itspace.hotelManagement.dto.response.HotelResponse;
+import am.itspace.hotelManagement.service.HotelService;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -14,17 +17,34 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
+import java.util.stream.IntStream;
 
 @Controller
 @RequestMapping("/")
 public class MainController {
 
+  private final HotelService hotelService;
+
   @Value("${room.image.upload.path}")
   private String uploadPath;
 
+  public MainController(HotelService hotelService) {
+    this.hotelService = hotelService;
+  }
+
 
   @GetMapping
-  public String mainPage(ModelMap modelMap) {
+  public String mainPage(@RequestParam(defaultValue = "1") int pageNumber, @RequestParam(defaultValue = "5") int pageSize, ModelMap modelMap) {
+    Page<HotelResponse> hotels = this.hotelService.getAllHotels(pageNumber, pageSize);
+    int totalPage = hotels.getTotalPages();
+    if (totalPage > 0) {
+      List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPage)
+          .boxed()
+          .toList();
+      modelMap.put("pageNumbers", pageNumbers);
+    }
+    modelMap.put("hotels", hotels);
     return "index";
   }
 

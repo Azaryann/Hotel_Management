@@ -11,9 +11,9 @@ import java.util.Optional;
 
 public interface HotelService {
   HotelResponse addHotel(HotelRequest hotelRequest);
-  Optional<HotelResponse> getHotelById(int hotelId);
+  Optional<HotelResponse> getHotelById(long hotelId);
   Page<HotelResponse> getAllHotels(int page, int size);
   List<HotelResponse> filterHotel(Boolean isFreeWiFi, Boolean isSwimmingPool, Boolean isParking, Boolean isFitnessCenter);
-  void deleteHotel(int hotelId);
+  void deleteHotel(long hotelId);
   Hotel updateHotel(HotelRequest hotelRequest);
 }

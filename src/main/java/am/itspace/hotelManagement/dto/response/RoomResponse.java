@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 public class RoomResponse {
 
-  private int id;
+  private long id;
   private String type;
   private String  bedType;
   private int roomNumber;

@@ -41,14 +41,14 @@ public class RoomController {
 
   // Admin And Customer
   @GetMapping("/description")
-  public String getRoomById(ModelMap modelMap, @RequestParam("id") int id) {
+  public String getRoomById(ModelMap modelMap, @RequestParam("id") long id) {
     Optional<RoomResponse> optionalRoomResponse = this.roomService.getRoomById(id);
     optionalRoomResponse.ifPresent(room -> modelMap.put("room", room));
     return optionalRoomResponse.isPresent() ? "room/roomById" : "redirect:/";
   }
 
   @GetMapping("/edit")
-  public String updateRoomPage(@RequestParam("id") int id, ModelMap modelMap) {
+  public String updateRoomPage(@RequestParam("id") long id, ModelMap modelMap) {
     Optional<RoomResponse> roomResponse = this.roomService.getRoomById(id);
     roomResponse.ifPresent(room -> modelMap.put("room", room));
     return "room/editRoom";
@@ -61,7 +61,7 @@ public class RoomController {
   }
 
   @GetMapping("/delete")
-  public String deleteRoom(@RequestParam("id") int id) {
+  public String deleteRoom(@RequestParam("id") long id) {
     this.roomService.deleteRoomById(id);
     return "redirect:/rooms";
   }

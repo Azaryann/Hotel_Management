@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 public class HotelResponse {
 
-  private int id;
+  private long id;
   private String name;
   private String description;
   private String city;

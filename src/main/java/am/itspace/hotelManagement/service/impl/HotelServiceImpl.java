@@ -35,7 +35,7 @@ public class HotelServiceImpl implements HotelService {
 
   @Override
   public HotelResponse addHotel(HotelRequest hotelRequest) {
-    Iterable<Integer> iterateRooms = hotelRequest.getRooms();
+    Iterable<Long> iterateRooms = hotelRequest.getRooms();
     List<Room> selectedRooms = this.roomRepository.findAllById(iterateRooms);
     Hotel hotel = Hotel.builder()
         .id(hotelRequest.getId())
@@ -54,7 +54,7 @@ public class HotelServiceImpl implements HotelService {
   }
 
   @Override
-  public Optional<HotelResponse> getHotelById(int hotelId) {
+  public Optional<HotelResponse> getHotelById(long hotelId) {
     return Optional.of(this.hotelRepository.findById(hotelId)
             .map(hotel -> HotelMapper.mapToHotelResponse.apply(hotel)))
         .orElseThrow(() -> new RuntimeException("hotel not found"));
@@ -85,7 +85,7 @@ public class HotelServiceImpl implements HotelService {
   }
 
   @Override
-  public void deleteHotel(int hotelId) {
+  public void deleteHotel(long hotelId) {
     this.hotelRepository.findById(hotelId)
         .ifPresentOrElse(hotel -> this.hotelRepository.delete(hotel),
             () -> {

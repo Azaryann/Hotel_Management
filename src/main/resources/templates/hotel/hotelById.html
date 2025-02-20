@@ -2,9 +2,18 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/header.css}">
     <title>Hotel Description</title>
+    <style>
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+    </style>
 </head>
 <body>
+<div th:replace="~{fragment/header::header}"></div>
 <h2>Hotel Description</h2>
 <h2 th:text="${hotel.name}"></h2>
 <p th:text="${hotel.description}"></p>

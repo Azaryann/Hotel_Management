@@ -39,29 +39,29 @@ public class HotelController {
     return "redirect:/hotels";
   }
 
-  @GetMapping
-  public String getAllHotel(@RequestParam(defaultValue = "1") int pageNumber, @RequestParam(defaultValue = "5") int pageSize, ModelMap modelMap){
-    Page<HotelResponse> hotels = this.hotelService.getAllHotels(pageNumber, pageSize);
-    int totalPage = hotels.getTotalPages();
-    if (totalPage > 0) {
-      List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPage)
-          .boxed()
-          .toList();
-      modelMap.put("pageNumbers", pageNumbers);
-    }
-    modelMap.put("hotels", hotels);
-    return "hotel/hotels";
-  }
+//  @GetMapping
+//  public String getAllHotel(@RequestParam(defaultValue = "1") int pageNumber, @RequestParam(defaultValue = "5") int pageSize, ModelMap modelMap){
+//    Page<HotelResponse> hotels = this.hotelService.getAllHotels(pageNumber, pageSize);
+//    int totalPage = hotels.getTotalPages();
+//    if (totalPage > 0) {
+//      List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPage)
+//          .boxed()
+//          .toList();
+//      modelMap.put("pageNumbers", pageNumbers);
+//    }
+//    modelMap.put("hotels", hotels);
+//    return "hotel/hotels";
+//  }
 
   @GetMapping("/description")
-  public String getRoomById(ModelMap modelMap, @RequestParam("id") int id) {
+  public String getRoomById(ModelMap modelMap, @RequestParam("id") long id) {
     Optional<HotelResponse> optionalHotel = this.hotelService.getHotelById(id);
     optionalHotel.ifPresent(hotel -> modelMap.put("hotel", hotel));
     return optionalHotel.isPresent() ? "hotel/hotelById" : "redirect:/";
   }
 
   @GetMapping("/edit")
-  public String updateRoomPage(@RequestParam("id") int id, ModelMap modelMap) {
+  public String updateRoomPage(@RequestParam("id") long id, ModelMap modelMap) {
     Optional<HotelResponse> optionalHotel = this.hotelService.getHotelById(id);
     optionalHotel.ifPresent(hotel -> modelMap.put("hotel", hotel));
     return "hotel/editHotel";
@@ -87,7 +87,7 @@ public class HotelController {
   }
 
   @GetMapping("/delete")
-  public String deleteRoom(@RequestParam("id") int id) {
+  public String deleteRoom(@RequestParam("id") long id) {
     this.hotelService.deleteHotel(id);
     return "redirect:/hotels";
   }

@@ -57,14 +57,14 @@ public class RoomServiceImpl implements RoomService {
   }
 
   @Override
-  public Optional<RoomResponse> getRoomById(int roomId) {
+  public Optional<RoomResponse> getRoomById(long roomId) {
     return Optional.of(this.roomRepository.findById(roomId)
             .map(room -> RoomMapper.mapToRoomResponse.apply(room)))
         .orElseThrow(() -> new RuntimeException("Room not found"));
   }
 
   @Override
-  public void deleteRoomById(int roomId) {
+  public void deleteRoomById(long roomId) {
     this.roomRepository.findById(roomId)
         .ifPresentOrElse(room -> this.roomRepository.delete(room),
             () -> {

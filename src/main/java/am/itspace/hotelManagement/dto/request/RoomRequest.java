@@ -10,7 +10,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 public class RoomRequest {
-  private int id;
+  private long id;
   private String type;
   private String  bedType;
   private int roomNumber;
