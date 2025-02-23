@@ -1,4 +1,4 @@
-package am.itspace.hotelManagement.config;
+package am.itspace.hotelManagement.config.bean;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
