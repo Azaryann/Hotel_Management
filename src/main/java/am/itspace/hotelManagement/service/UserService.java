@@ -17,4 +17,6 @@ public interface UserService {
     void updateUser(UserDto userDto);
 
     void deleteUserById(Long id);
+
+    boolean verifyUser(String token);
 }

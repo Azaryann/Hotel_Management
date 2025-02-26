@@ -9,10 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -52,8 +49,21 @@ public class AuthController {
             model.addAttribute("user", userDto);
             return "register";
         }
+        try{
+            userService.saveUser(userDto);
+            model.addAttribute("success", "A verification email has been sent!");
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
+        }
         userService.saveUser(userDto);
         return "redirect:/register?success";
+    }
+
+    @GetMapping("/verify")
+    public String verifyUser(@RequestParam("token") String token, Model model) {
+        boolean isVerified = userService.verifyUser(token);
+        model.addAttribute("message", isVerified ? "Your email has been verified!" : "Invalid verification link.");
+        return "verification-result";
     }
 
     @GetMapping("/users")

@@ -93,7 +93,6 @@
                         <label class="form-label">Role</label>
                         <select class="form-control" id="role" name="role" th:field="*{role}">
                             <option value="ROLE_USER">User</option>
-                            <option value="ROLE_ADMIN">Admin</option>
                         </select>
                         <p class="text-danger" th:errors="*{role}" th:if="${#fields.hasErrors('role')}"></p>
                     </div>
@@ -103,6 +102,8 @@
                         <span>Already registered? <a href="/" th:href="@{/login}">Login
                              here</a></span>
                     </div>
+                    <p th:if="${success}" th:text="${success}" style="color: green;"></p>
+                    <p th:if="${error}" th:text="${error}" style="color: red;"></p>
                 </form>
             </div>
         </div>

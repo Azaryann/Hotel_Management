@@ -14,15 +14,19 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
+
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
+    private final EmailServiceImpl emailService;
 
     @Transactional
     public void saveUser(UserDto userDto) {
@@ -31,7 +35,7 @@ public class UserServiceImpl implements UserService {
         user.setLastName(userDto.getLastName());
         user.setEmail(userDto.getEmail());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-
+        user.setEnabled(false);
         Role role = roleRepository.findByName(userDto.getRole());
         if (role == null) {
             role = new Role();
@@ -39,7 +43,22 @@ public class UserServiceImpl implements UserService {
             role = roleRepository.save(role);
         }
         user.setRoles(Collections.singletonList(role));
+        String verificationToken = UUID.randomUUID().toString();
+        user.setVerificationToken(verificationToken);
         userRepository.save(user);
+        emailService.sendVerificationEmail(userDto.getEmail(), verificationToken);
+    }
+
+    public boolean verifyUser(String token) {
+        Optional<User> userOptional = userRepository.findByVerificationToken(token);
+        if (userOptional.isEmpty()) return false;
+
+        User user = userOptional.get();
+        user.setEnabled(true);
+        user.setVerificationToken(null);
+        userRepository.save(user);
+
+        return true;
     }
 
     public User findByEmail(String email) {

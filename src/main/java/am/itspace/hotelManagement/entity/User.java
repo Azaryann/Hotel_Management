@@ -34,6 +34,11 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    private boolean enabled = false;
+
+    @Column(name = "verification_token", unique = true)
+    private String verificationToken;
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinTable(
             name = "users_roles",

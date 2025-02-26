@@ -17,7 +17,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorize) ->
                         authorize.requestMatchers("/register/**").permitAll()
                                 .requestMatchers("/", "/index").permitAll()
-                                .requestMatchers("/users").hasRole("ADMIN")
+                                .requestMatchers("/verify").permitAll()
+                                .requestMatchers("/users").permitAll()
                                 .requestMatchers("/users/edit/**").hasRole("ADMIN")
                                 .requestMatchers("/users/update").hasRole("ADMIN")
                                 .requestMatchers("/users/delete/**").hasRole("ADMIN")
