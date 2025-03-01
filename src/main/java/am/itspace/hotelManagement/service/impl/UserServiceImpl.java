@@ -3,6 +3,8 @@ package am.itspace.hotelManagement.service.impl;
 import am.itspace.hotelManagement.dto.UserDto;
 import am.itspace.hotelManagement.entity.Role;
 import am.itspace.hotelManagement.entity.User;
+import am.itspace.hotelManagement.exception.EmailAlreadyExistsException;
+import am.itspace.hotelManagement.exception.UserNotFoundException;
 import am.itspace.hotelManagement.mapper.UserMapper;
 import am.itspace.hotelManagement.repository.RoleRepository;
 import am.itspace.hotelManagement.repository.UserRepository;
@@ -30,6 +32,9 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     public void saveUser(UserDto userDto) {
+        if (userRepository.findByEmail(userDto.getEmail()) != null) {
+            throw new EmailAlreadyExistsException("Please verify your email");
+        }
         User user = new User();
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
@@ -67,13 +72,13 @@ public class UserServiceImpl implements UserService {
 
     public User findById(Long id) {
         return userRepository.findById(id).orElseThrow(() ->
-                new RuntimeException("Not Found"));
+                new UserNotFoundException("User not found with id: " + id));
     }
 
     @Transactional
     public void updateUser(UserDto userDto) {
         User user = userRepository.findById(userDto.getId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + userDto.getId()));
 
         if (userDto.getFirstName() != null) {
             user.setFirstName(userDto.getFirstName());
@@ -106,6 +111,9 @@ public class UserServiceImpl implements UserService {
     }
 
     public void deleteUserById(Long id) {
+        if (!userRepository.existsById(id)) {
+            throw new UserNotFoundException("User not found with id: " + id);
+        }
         userRepository.deleteById(id);
     }
 }
