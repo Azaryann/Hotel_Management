@@ -13,6 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Hotel {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
