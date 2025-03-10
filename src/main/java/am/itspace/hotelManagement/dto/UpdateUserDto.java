@@ -9,7 +9,7 @@ import lombok.*;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDto {
+public class UpdateUserDto {
     private Long id;
     @NotEmpty
     private String firstName;

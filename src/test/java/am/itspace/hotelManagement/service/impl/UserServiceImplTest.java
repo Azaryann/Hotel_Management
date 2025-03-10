@@ -1,12 +1,11 @@
 package am.itspace.hotelManagement.service.impl;
 
-
-import am.itspace.hotelManagement.dto.UserDto;
+import am.itspace.hotelManagement.dto.CreateUserDto;
+import am.itspace.hotelManagement.dto.UpdateUserDto;
 import am.itspace.hotelManagement.entity.Role;
 import am.itspace.hotelManagement.entity.User;
 import am.itspace.hotelManagement.exception.EmailAlreadyExistsException;
 import am.itspace.hotelManagement.exception.UserNotFoundException;
-
 import am.itspace.hotelManagement.repository.RoleRepository;
 import am.itspace.hotelManagement.repository.UserRepository;
 
@@ -43,18 +42,26 @@ class UserServiceImplTest {
     @InjectMocks
     private UserServiceImpl userService;
 
-    private UserDto userDto;
+    private UpdateUserDto updateUserDto;
+    private CreateUserDto createUserDto;
     private User user;
     private Role role;
 
     @BeforeEach
     void setUp() {
-        userDto = new UserDto();
-        userDto.setFirstName("aaa");
-        userDto.setLastName("bbb");
-        userDto.setEmail("aaabbb@example.com");
-        userDto.setPassword("password");
-        userDto.setRole("USER");
+        updateUserDto = new UpdateUserDto();
+        updateUserDto.setFirstName("aaa");
+        updateUserDto.setLastName("bbb");
+        updateUserDto.setEmail("aaabbb@example.com");
+        updateUserDto.setPassword("password");
+        updateUserDto.setRole("USER");
+
+        createUserDto = new CreateUserDto();
+        createUserDto.setFirstName("aaa");
+        createUserDto.setLastName("bbb");
+        createUserDto.setEmail("aaabbb@example.com");
+        createUserDto.setPassword("password");
+        createUserDto.setRole("USER");
 
         user = new User();
         user.setFirstName("aaa");
@@ -70,25 +77,25 @@ class UserServiceImplTest {
 
     @Test
     void saveUser_ShouldSaveUser_WhenEmailDoesNotExist() {
-        when(userRepository.findByEmail(userDto.getEmail())).thenReturn(null);
-        when(passwordEncoder.encode(userDto.getPassword())).thenReturn("encodedPassword");
-        when(roleRepository.findByName(userDto.getRole())).thenReturn(role);
+        when(userRepository.findByEmail(createUserDto.getEmail())).thenReturn(null);
+        when(passwordEncoder.encode(createUserDto.getPassword())).thenReturn("encodedPassword");
+        when(roleRepository.findByName(createUserDto.getRole())).thenReturn(role);
         when(userRepository.save(any(User.class))).thenReturn(user);
 
-        userService.saveUser(userDto);
+        userService.saveUser(createUserDto);
 
-        verify(userRepository, times(1)).findByEmail(userDto.getEmail());
-        verify(passwordEncoder, times(1)).encode(userDto.getPassword());
-        verify(roleRepository, times(1)).findByName(userDto.getRole());
+        verify(userRepository, times(1)).findByEmail(createUserDto.getEmail());
+        verify(passwordEncoder, times(1)).encode(createUserDto.getPassword());
+        verify(roleRepository, times(1)).findByName(createUserDto.getRole());
         verify(userRepository, times(1)).save(any(User.class));
-        verify(emailService, times(1)).sendVerificationEmail(eq(userDto.getEmail()), anyString());
+        verify(emailService, times(1)).sendVerificationEmail(eq(createUserDto.getEmail()), anyString());
     }
 
     @Test
     void saveUser_ShouldThrowException_WhenEmailAlreadyExists() {
-        when(userRepository.findByEmail(userDto.getEmail())).thenReturn(user);
+        when(userRepository.findByEmail(createUserDto.getEmail())).thenReturn(user);
 
-        assertThrows(EmailAlreadyExistsException.class, () -> userService.saveUser(userDto));
+        assertThrows(EmailAlreadyExistsException.class, () -> userService.saveUser(createUserDto));
     }
 
     @Test
@@ -119,10 +126,10 @@ class UserServiceImplTest {
     @Test
     void updateUser_ShouldUpdateUser_WhenUserExists() {
         when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
-        when(passwordEncoder.encode(userDto.getPassword())).thenReturn("encodedPassword");
-        when(roleRepository.findByName(userDto.getRole())).thenReturn(role);
+        when(passwordEncoder.encode(updateUserDto.getPassword())).thenReturn("encodedPassword");
+        when(roleRepository.findByName(updateUserDto.getRole())).thenReturn(role);
 
-        userService.updateUser(userDto);
+        userService.updateUser(updateUserDto);
 
         verify(userRepository, times(1)).save(user);
     }

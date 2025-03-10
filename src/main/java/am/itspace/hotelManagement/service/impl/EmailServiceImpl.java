@@ -1,21 +1,29 @@
 package am.itspace.hotelManagement.service.impl;
 
 import am.itspace.hotelManagement.service.EmailService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
 public class EmailServiceImpl implements EmailService {
 
     private final JavaMailSender mailSender;
 
+    private final String MESSAGE="Click the link to verify your email: ";
+
+    @Value("${mailing.host}")
+    private String host;
+
+    public EmailServiceImpl(JavaMailSender mailSender) {
+        this.mailSender = mailSender;
+    }
+
     public void sendVerificationEmail(String to, String token) {
         String subject = "Verify Your Email";
-        String verificationUrl = "http://localhost:8080/verify?token=" + token;
-        String message = "Click the link to verify your email: " + verificationUrl;
+        String verificationUrl = host + token;
+        String message = MESSAGE + verificationUrl;
 
         SimpleMailMessage email = new SimpleMailMessage();
         email.setTo(to);

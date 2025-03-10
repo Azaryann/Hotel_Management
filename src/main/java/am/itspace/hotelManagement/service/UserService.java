@@ -1,20 +1,21 @@
 package am.itspace.hotelManagement.service;
 
-import am.itspace.hotelManagement.dto.UserDto;
+import am.itspace.hotelManagement.dto.CreateUserDto;
+import am.itspace.hotelManagement.dto.UpdateUserDto;
 import am.itspace.hotelManagement.entity.User;
 
 import java.util.List;
 
 public interface UserService {
-    void saveUser(UserDto userDto);
+    void saveUser(CreateUserDto createUserDto);
 
     User findByEmail(String email);
 
-    List<UserDto>findAllUsers();
+    List<UpdateUserDto> findAllUsers();
 
     User findById(Long id);
 
-    void updateUser(UserDto userDto);
+    void updateUser(UpdateUserDto updateUserDto);
 
     void deleteUserById(Long id);
 

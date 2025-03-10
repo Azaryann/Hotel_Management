@@ -1,14 +1,17 @@
 package am.itspace.hotelManagement.service.impl;
 
-import am.itspace.hotelManagement.dto.UserDto;
+import am.itspace.hotelManagement.dto.CreateUserDto;
+import am.itspace.hotelManagement.dto.UpdateUserDto;
 import am.itspace.hotelManagement.entity.Role;
 import am.itspace.hotelManagement.entity.User;
 import am.itspace.hotelManagement.exception.EmailAlreadyExistsException;
 import am.itspace.hotelManagement.exception.UserNotFoundException;
 import am.itspace.hotelManagement.mapper.UserMapper;
+
 import am.itspace.hotelManagement.repository.RoleRepository;
 import am.itspace.hotelManagement.repository.UserRepository;
 import am.itspace.hotelManagement.service.UserService;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,8 +25,8 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 @Slf4j
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
@@ -33,30 +36,30 @@ public class UserServiceImpl implements UserService {
     private final EmailServiceImpl emailService;
 
     @Transactional
-    public void saveUser(UserDto userDto) {
-        log.info("Saving user with email: {}", userDto.getEmail());
-        if (userRepository.findByEmail(userDto.getEmail()) != null) {
-            log.warn("Email already exists: {}", userDto.getEmail());
+    public void saveUser(CreateUserDto createUserDto) {
+        log.info("Saving user with email: {}", createUserDto.getEmail());
+        if (userRepository.findByEmail(createUserDto.getEmail()) != null) {
+            log.warn("Email already exists: {}", createUserDto.getEmail());
             throw new EmailAlreadyExistsException("Please verify your email");
         }
         User user = new User();
-        user.setFirstName(userDto.getFirstName());
-        user.setLastName(userDto.getLastName());
-        user.setEmail(userDto.getEmail());
-        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        user.setFirstName(createUserDto.getFirstName());
+        user.setLastName(createUserDto.getLastName());
+        user.setEmail(createUserDto.getEmail());
+        user.setPassword(passwordEncoder.encode(createUserDto.getPassword()));
         user.setEnabled(false);
-        Role role = roleRepository.findByName(userDto.getRole());
+        Role role = roleRepository.findByName(createUserDto.getRole());
         if (role == null) {
             role = new Role();
-            role.setName(userDto.getRole());
+            role.setName(createUserDto.getRole());
             role = roleRepository.save(role);
         }
         user.setRoles(Collections.singletonList(role));
         String verificationToken = UUID.randomUUID().toString();
         user.setVerificationToken(verificationToken);
         userRepository.save(user);
-        emailService.sendVerificationEmail(userDto.getEmail(), verificationToken);
-        log.info("User saved successfully with email: {}", userDto.getEmail());
+        emailService.sendVerificationEmail(createUserDto.getEmail(), verificationToken);
+        log.info("User saved successfully with email: {}", createUserDto.getEmail());
     }
 
     public boolean verifyUser(String token) {
@@ -87,40 +90,40 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
-    public void updateUser(UserDto userDto) {
-        log.info("Updating user with id: {}", userDto.getId());
-        User user = userRepository.findById(userDto.getId())
-                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + userDto.getId()));
+    public void updateUser(UpdateUserDto updateUserDto) {
+        log.info("Updating user with id: {}", updateUserDto.getId());
+        User user = userRepository.findById(updateUserDto.getId())
+                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + updateUserDto.getId()));
 
-        if (userDto.getFirstName() != null) {
-            user.setFirstName(userDto.getFirstName());
+        if (updateUserDto.getFirstName() != null) {
+            user.setFirstName(updateUserDto.getFirstName());
         }
-        if (userDto.getLastName() != null) {
-            user.setLastName(userDto.getLastName());
+        if (updateUserDto.getLastName() != null) {
+            user.setLastName(updateUserDto.getLastName());
         }
-        if (userDto.getEmail() != null) {
-            user.setEmail(userDto.getEmail());
+        if (updateUserDto.getEmail() != null) {
+            user.setEmail(updateUserDto.getEmail());
         }
-        if (userDto.getPassword() != null) {
-            user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        if (updateUserDto.getPassword() != null) {
+            user.setPassword(passwordEncoder.encode(updateUserDto.getPassword()));
         }
-        if (userDto.getRole() != null) {
-            Role role = roleRepository.findByName(userDto.getRole());
+        if (updateUserDto.getRole() != null) {
+            Role role = roleRepository.findByName(updateUserDto.getRole());
             if (role == null) {
                 role = new Role();
-                role.setName(userDto.getRole());
+                role.setName(updateUserDto.getRole());
                 role = roleRepository.save(role);
             }
             user.setRoles(Collections.singletonList(role));
         }
         userRepository.save(user);
-        log.info("User updated successfully with id: {}", userDto.getId());
+        log.info("User updated successfully with id: {}", updateUserDto.getId());
     }
 
-    public List<UserDto> findAllUsers() {
+    public List<UpdateUserDto> findAllUsers() {
         log.info("Finding all users");
         List<User> users = userRepository.findAll();
-        return users.stream().map(userMapper::toDTO)
+        return users.stream().map(userMapper::toUpdateDTO)
                 .collect(Collectors.toList());
     }
 

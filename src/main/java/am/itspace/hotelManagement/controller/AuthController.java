@@ -1,6 +1,7 @@
 package am.itspace.hotelManagement.controller;
 
-import am.itspace.hotelManagement.dto.UserDto;
+import am.itspace.hotelManagement.dto.CreateUserDto;
+import am.itspace.hotelManagement.dto.UpdateUserDto;
 import am.itspace.hotelManagement.entity.User;
 import am.itspace.hotelManagement.service.UserService;
 import jakarta.validation.Valid;
@@ -15,10 +16,13 @@ import java.util.List;
 
 @Slf4j
 @Controller
-@RequiredArgsConstructor
 public class AuthController {
 
     private final UserService userService;
+
+    public AuthController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping({"/", "index"})
     public String home() {
@@ -32,30 +36,30 @@ public class AuthController {
 
     @GetMapping("register")
     public String showRegistrationForm(Model model) {
-        UserDto user = new UserDto();
+        UpdateUserDto user = new UpdateUserDto();
         model.addAttribute("user", user);
         return "register";
     }
 
     @PostMapping("/register/save")
-    public String registration(@Valid @ModelAttribute("user") UserDto userDto,
-                               BindingResult result,
-                               Model model) {
-        User existing = userService.findByEmail(userDto.getEmail());
+    public String registration(@Valid @ModelAttribute("user") CreateUserDto createUserDto,
+                               BindingResult result, Model model) {
+        User existing = userService.findByEmail(createUserDto.getEmail());
         if (existing != null) {
             result.rejectValue("email", null, "There is already an account registered with that email");
         }
         if (result.hasErrors()) {
-            model.addAttribute("user", userDto);
+            model.addAttribute("user", createUserDto);
             return "register";
         }
-        try{
-            userService.saveUser(userDto);
+        try {
+            userService.saveUser(createUserDto);
             model.addAttribute("success", "A verification email has been sent!");
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
+            return "register";
         }
-        userService.saveUser(userDto);
+        userService.saveUser(createUserDto);
         return "redirect:/register?success";
     }
 
@@ -68,11 +72,7 @@ public class AuthController {
 
     @GetMapping("/users")
     public String listRegisteredUsers(Model model) {
-        List<UserDto> users = userService.findAllUsers();
-        users.forEach(System.out::println);
-//        users.forEach(user -> {
-//            System.out.println("User: " + user.getEmail() + ", Roles: " + user.getRole());
-//        });
+        List<UpdateUserDto> users = userService.findAllUsers();
         model.addAttribute("users", users);
         return "users";
     }
@@ -84,13 +84,13 @@ public class AuthController {
         return "edit";
     }
 
-    @PostMapping("/users/update")
-    public String updateUser(@Valid @ModelAttribute("user") UserDto user, BindingResult result, Model model) {
+    @PutMapping("/users/update")
+    public String updateUser(@Valid @ModelAttribute("user") UpdateUserDto user) {
         userService.updateUser(user);
         return "redirect:/login";
     }
 
-    @GetMapping("/users/delete/{id}")
+    @DeleteMapping("/users/delete/{id}")
     public String deleteUser(@PathVariable(value = "id") Long id) {
         userService.deleteUserById(id);
         return "redirect:/users";
