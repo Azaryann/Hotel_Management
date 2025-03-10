@@ -1,14 +1,10 @@
 <!DOCTYPE html>
-
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <link rel="stylesheet" th:href="@{/header.css}">
   <link rel="stylesheet" th:href="@{/main.css}">
-  <title>Main</title>
-  <style>
-
-  </style>
+  <title>Title</title>
 </head>
 <body>
 <div th:replace="~{fragment/header::header}"></div>
@@ -17,7 +13,7 @@
 </div>
 <div th:if="${!hotels.isEmpty()}" class="container">
   <div class="sidebar">
-    <form class="filter-group" action="hotels/filter" method="get">
+    <form class="filter-group" method="get">
       <label>
         <input class="checkbox" type="checkbox" name="rate" value="FIVE" />
         ★★★★★ (Five)
@@ -45,10 +41,9 @@
       <button type="submit">Filter</button>
     </form>
     <h3>Filter by:</h3>
-    <form class="filter-group" action="hotels/filter" method="get">
+    <form class="filter-group" method="get">
       <label>
-        <input class="checkbox" type="checkbox" name="isFreeWiFi" value="true"
-               th:checked="${isFreeWiFi ?: false}"/>
+        <input class="checkbox" type="checkbox" name="isFreeWiFi" value="true" th:checked="${isFreeWiFi ?: false}"/>
         Free WiFi
         <input type="hidden" name="isFreeWiFi" value="false"/>
       </label>
@@ -59,8 +54,7 @@
         <input type="hidden" name="isSwimmingPool" value="false"/>
       </label>
       <label>
-        <input class="checkbox" type="checkbox" name="isParking" value="true"
-               th:checked="${isParking ?: false}"/>
+        <input class="checkbox" type="checkbox" name="isParking" value="true" th:checked="${isParking ?: false}"/>
         Parking
         <input type="hidden" name="isParking" value="false"/>
       </label>
@@ -76,15 +70,15 @@
   <div class="hotel-list">
     <div class="hotel-card" th:each="hotel: ${hotels}">
       <div class="hotel-image">
-        <img th:src="@{/get-image(img=${hotel.rooms[0].imageUrls[0]})}" alt="Hotel Image">
+        <img th:src="@{/get-image(img=${hotel.getRooms()[0].getImageUrls()[0]})}" alt="Hotel Image">
       </div>
       <div class="hotel-details">
         <div class="hotel-name" th:text="${hotel.getName()}">
-          <span class="hotel-rating" th:each="i : ${#numbers.sequence(1, hotel.getRate().values())}">*</span>
+          <span class="hotel-rating">****</span>
         </div>
         <div th:text="${'Hotel in ' + hotel.getCity() + ' ' + hotel.getCountry()}"></div>
         <div th:text="${hotel.getDescription()}"></div>
-        <div>Rating <span class="hotel-rating" th:text="${hotel.getRate().name()}"></span></div>
+        <div>Superb <span class="hotel-rating">9.1</span></div>
         <div class="price" th:text="${'AMD ' +  hotel.getRooms()[0].getPricePerNight() + ' per night'}"></div>
         <button class="button">Check availability</button>
       </div>
@@ -97,47 +91,5 @@
      th:text="${pageNumber}"
      th:class="${pageNumber == hotels.number + 1} ? active"></a>
 </div>
-<a href="/rooms/add">Add Room</a><br>
-<a href="/hotels/add">Add Hotel</a><br>
 </body>
 </html>
-=======
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
->
-<head>
-    <meta charset="UTF-8">
-    <title>Hotel Management</title>
-    <link crossorigin="anonymous"
-          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-          rel="stylesheet">
-</head>
-<body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">Hotel Management</a>
-        <button aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"
-                data-bs-target="#navbarSupportedContent" data-bs-toggle="collapse" type="button">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a aria-current="page" class="nav-link active" th:href="@{/register}">Register</a>
-                </li>
-                <li class="nav-item">
-                    <a aria-current="page" class="nav-link active" th:href="@{/login}">Login</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
-<div class="container">
-    <div class="row">
-        <h1 class="text-center"> Welcome to Hotel Management </h1>
-    </div>
-</div>
-</body>
-</html>
-

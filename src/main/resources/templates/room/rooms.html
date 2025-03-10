@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Room page</title>
+</head>
+<body>
+<h2>Room page</h2>
+<table border="1">
+    <tr>
+        <th>Room ID</th>
+        <th>Room type</th>
+        <th>Bed Type</th>
+        <th>Room Number</th>
+        <th>Price Per Night</th>
+        <th>Image</th>
+        <th>Status</th>
+        <th>Action</th>
+    </tr>
+    <tr th:each="room : ${rooms}">
+        <td th:text="${room.getId()}"></td>
+        <td th:text="${room.getType()}"></td>
+        <td th:text="${room.bedType}"></td>
+        <td th:text="${room.roomNumber}"></td>
+        <td th:text="${room.pricePerNight}"></td>
+        <td><img th:src="@{/get-image(img=${room.imageUrls[0]})}" style="width: 100px" alt=""></td>
+        <td th:text="${room.roomStatus}"></td>
+        <td th:if="${room.isFreeWiFi}">Free WiFi</td>
+        <td th:if="${room.isSwimmingPool}">Swimming Pool</td>
+        <td th:if="${room.isParking}">Parking</td>
+        <td th:if="${room.isFitnessCenter}">Fitness Center</td>
+        <td><a th:href="@{/rooms/description(id=${room.id})}">Description</a></td>
+        <td> <a th:href="@{/rooms/edit(id=${room.id})}">Edit</a>
+            | <a th:href="@{/rooms/delete(id=${room.id})}">Delete</a> </td>
+    </tr>
+</table>
+</body>
+</html>
