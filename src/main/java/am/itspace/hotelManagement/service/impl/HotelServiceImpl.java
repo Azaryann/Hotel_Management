@@ -2,101 +2,125 @@ package am.itspace.hotelManagement.service.impl;
 
 import am.itspace.hotelManagement.dto.request.HotelRequest;
 import am.itspace.hotelManagement.dto.response.HotelResponse;
+import am.itspace.hotelManagement.dto.response.HotelResponseDto;
+import am.itspace.hotelManagement.enums.Rate;
 import am.itspace.hotelManagement.mapper.HotelMapper;
 import am.itspace.hotelManagement.model.Hotel;
-import am.itspace.hotelManagement.model.Room;
 import am.itspace.hotelManagement.repository.HotelRepository;
-import am.itspace.hotelManagement.repository.RoomRepository;
 import am.itspace.hotelManagement.service.HotelService;
 import am.itspace.hotelManagement.specification.HotelSpecification;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class HotelServiceImpl implements HotelService {
 
   private final HotelRepository hotelRepository;
-  private final RoomRepository roomRepository;
 
-  @Value("${room.image.upload.path}")
-  private String uploadPath;
-
-  public HotelServiceImpl(HotelRepository hotelRepository, RoomRepository roomRepository) {
+  public HotelServiceImpl(HotelRepository hotelRepository) {
     this.hotelRepository = hotelRepository;
-    this.roomRepository = roomRepository;
   }
 
   @Override
+  @Transactional
   public HotelResponse addHotel(HotelRequest hotelRequest) {
-    Iterable<Long> iterateRooms = hotelRequest.getRooms();
-    List<Room> selectedRooms = this.roomRepository.findAllById(iterateRooms);
+
     Hotel hotel = Hotel.builder()
         .id(hotelRequest.getId())
         .name(hotelRequest.getName())
         .description(hotelRequest.getDescription())
         .city(hotelRequest.getCity())
         .country(hotelRequest.getCountry())
-        .longitude(hotelRequest.getLongitude())
-        .latitude(hotelRequest.getLatitude())
         .rate(hotelRequest.getRate())
-        .rooms(selectedRooms)
         .build();
-    selectedRooms.forEach(room -> room.setHotel(hotel));
+
     Hotel savedHotel = this.hotelRepository.save(hotel);
+    log.info("Hotel created successfully: {}", savedHotel);
+
     return HotelMapper.mapToHotelResponse.apply(savedHotel);
   }
 
   @Override
-  public Optional<HotelResponse> getHotelById(long hotelId) {
+  public Optional<HotelResponseDto> getHotelById(long hotelId) {
     return Optional.of(this.hotelRepository.findById(hotelId)
-            .map(hotel -> HotelMapper.mapToHotelResponse.apply(hotel)))
-        .orElseThrow(() -> new RuntimeException("hotel not found"));
+            .map(hotel -> HotelMapper.mapToHotelResponseDto.apply(hotel)))
+        .orElseThrow(() -> new RuntimeException("hotel with id " + hotelId + " not found"));
   }
 
-
   @Override
-  public Page<HotelResponse> getAllHotels(int page, int size) {
+  public Page<HotelResponseDto> getAllHotels(int page, int size) {
     Pageable pageable = PageRequest.of(page - 1, size);
     Page<Hotel> hotels = this.hotelRepository.findAll(pageable);
 
-    if (hotels.isEmpty()) throw new RuntimeException("The list of hotel does not exist");
+    if (hotels.isEmpty()) log.error("hotel not found");
 
-    return hotels.map(HotelMapper.mapToHotelResponse);
+    hotels.forEach(hotel -> {
+      hotel.setRooms(hotel.getRooms());
+    });
+    List<HotelResponseDto> filteredHotels = hotels.getContent().stream()
+        .filter(hotel -> !hotel.getRooms().isEmpty())
+        .map(hotel -> HotelMapper.mapToHotelResponseDto.apply(hotel))
+        .toList();
+
+    return new PageImpl<>(filteredHotels, pageable, hotels.getTotalElements());
   }
 
   @Override
-  public List<HotelResponse> filterHotel(Boolean isFreeWiFi, Boolean isSwimmingPool, Boolean isParking, Boolean isFitnessCenter) {
-    Specification<Hotel> specification = Specification
-        .where(HotelSpecification.hasRoomWithFreeWiFi.apply(isFitnessCenter))
-        .or(HotelSpecification.hasRoomWithSwimmingPool.apply(isSwimmingPool))
-        .or(HotelSpecification.hasRoomWithParking.apply(isParking))
-        .or(HotelSpecification.hasRoomWithFitnessCenter.apply(isFitnessCenter));
-    List<Hotel> hotels = this.hotelRepository.findAll(specification);
-    return hotels.stream()
-        .map(hotel -> HotelMapper.mapToHotelResponse.apply(hotel))
+  public Page<HotelResponseDto> filterHotel(
+      Boolean isFreeWiFi,
+      Boolean isSwimmingPool,
+      Boolean isParking,
+      Boolean isFitnessCenter,
+      int page,
+      int size
+  ) {
+    Specification<Hotel> specification = Specification.where(null);
+
+    if (Boolean.TRUE.equals(isFreeWiFi)) {
+      specification = specification.or(HotelSpecification.hasRoomWithFreeWiFi.apply(true));
+    }
+    if (Boolean.TRUE.equals(isSwimmingPool)) {
+      specification = specification.or(HotelSpecification.hasRoomWithSwimmingPool.apply(true));
+    }
+    if (Boolean.TRUE.equals(isParking)) {
+      specification = specification.or(HotelSpecification.hasRoomWithParking.apply(true));
+    }
+    if (Boolean.TRUE.equals(isFitnessCenter)) {
+      specification = specification.or(HotelSpecification.hasRoomWithFitnessCenter.apply(true));
+    }
+
+    Pageable pageable = PageRequest.of(page - 1, size);
+    Page<Hotel> hotels = this.hotelRepository.findAll(specification, pageable);
+
+
+    List<HotelResponseDto> filteredHotels = hotels.stream()
+        .map(hotel -> HotelMapper.mapToHotelResponseDto.apply(hotel))
         .toList();
+    return new PageImpl<>(filteredHotels, pageable, hotels.getTotalElements());
   }
 
   @Override
   public void deleteHotel(long hotelId) {
     this.hotelRepository.findById(hotelId)
         .ifPresentOrElse(hotel -> this.hotelRepository.delete(hotel),
-            () -> {
-              throw new RuntimeException("hotel not found");
-            });
+            () -> log.error("hotel not found"));
   }
 
   @Override
   public Hotel updateHotel(HotelRequest hotelRequest) {
     Hotel hotel = this.hotelRepository.findById(hotelRequest.getId()).orElseThrow();
     hotel.setName(hotel.getName());
+    log.info("hotel updated");
     return HotelMapper.mapToEditHotel.apply(hotel);
   }
 }

@@ -1,16 +1,19 @@
 package am.itspace.hotelManagement.dto.response;
 
 import am.itspace.hotelManagement.enums.Rate;
+import am.itspace.hotelManagement.model.Room;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class HotelResponse {
+public class HotelResponseDto {
 
   private long id;
   private String name;
@@ -18,4 +21,5 @@ public class HotelResponse {
   private String city;
   private String country;
   private Rate rate;
+  private List<Room> rooms;
 }

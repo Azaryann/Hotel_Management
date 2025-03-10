@@ -2,13 +2,11 @@ package am.itspace.hotelManagement.dto.request;
 
 import am.itspace.hotelManagement.enums.RoomStatus;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @Data
-@NoArgsConstructor
 public class RoomRequest {
   private long id;
   private String type;
@@ -21,4 +19,5 @@ public class RoomRequest {
   private Boolean isSwimmingPool;
   private Boolean isParking;
   private Boolean isFitnessCenter;
+  private long hotelId;
 }

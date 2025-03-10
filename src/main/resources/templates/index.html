@@ -4,87 +4,73 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" th:href="@{/header.css}">
     <link rel="stylesheet" th:href="@{/main.css}">
-
     <title>Main</title>
+    <style>
+
+    </style>
 </head>
 <body>
 <div th:replace="~{fragment/header::header}"></div>
-<!--<div th:replace="~{fragment/hotel/hotels::hotels}"></div>-->
-<h2>hotels Page</h2>
-<table border="1">
-    <tr>
-        <th>hotel Name</th>
-        <th>Description</th>
-        <th>City</th>
-        <th>Country</th>
-        <th>Rooms Numbers</th>
-        <th>Room Image</th>
-        <th>Description</th>
-        <th>Edit</th>
-        <th>Delete</th>
-    </tr>
-    <tr th:each="hotel : ${hotels}">
-        <td th:text="${hotel.name}"></td>
-        <td th:text="${hotel.description}"></td>
-        <td th:text="${hotel.city}"></td>
-        <td th:text="${hotel.country}"></td>
-        <td th:if="${hotel.rooms != null and !hotel.rooms.isEmpty()}" th:text="${hotel.rooms[0].roomNumber}"></td>
-        <td th:if="${hotel.rooms != null and !hotel.rooms.isEmpty()}">
-            <img th:src="@{/get-image(img=${hotel.rooms[0].imageUrls[0]})} " style="width: 100px" alt="">
-        </td>
-        <td><a th:href="@{/hotels/description(id=${hotel.id})}">Description</a></td>
-        <td> <a th:href="@{/hotels/edit(id=${hotel.id})}">Edit</a>
-            | <a th:href="@{/hotels/delete(id=${hotel.id})}">Delete</a> </td>
-    </tr>
-</table>
-
-<form action="hotels/filter" method="get">
-    <label>
-        <input type="checkbox" name="isFreeWiFi" value="true" th:checked="${isFreeWiFi}" />
-        Free WiFi
-    </label>
-    <label>
-        <input type="checkbox" name="isSwimmingPool" value="true" th:checked="${isSwimmingPool}" />
-        Swimming Pool
-    </label>
-    <label>
-        <input type="checkbox" name="isParking" value="true" th:checked="${isParking}" />
-        Parking
-    </label>
-    <label>
-        <input type="checkbox" name="isFitnessCenter" value="true" th:checked="${isFitnessCenter}" />
-        Fitness Center
-    </label>
-    <button type="submit">Filter</button>
-</form>
-
-<!--    <table border="1">-->
-<!--        <tr>-->
-<!--            <th>Rooms</th>-->
-<!--        </tr>-->
-<!--        <tr th:each="hotel : ${hotels}">-->
-<!--            <td>-->
-<!--                <ul>-->
-<!--                    <li th:each="room : ${hotel.rooms}">-->
-<!--                        Room Number: <span th:text="${room.roomNumber}"></span> |-->
-<!--                        Free WiFi: <input type="checkbox" th:checked="${room.isFreeWiFi}" /> |-->
-<!--                        Swimming Pool: <input type="checkbox" th:checked="${room.isSwimmingPool}" /> |-->
-<!--                        Parking: <input type="checkbox" th:checked="${room.isParking}"/> |-->
-<!--                        Fitness Center: <input type="checkbox" th:checked="${room.isFitnessCenter}" /> |-->
-<!--                    </li>-->
-<!--                </ul>-->
-<!--            </td>-->
-<!--        </tr>-->
-<!--    </table>-->
-
-
+<div class="hotel-list-error" th:if="${hotels.isEmpty()}">
+    <h2 class="hotel-error-msg">Error 404 Hotel is not available. Please try later!</h2>
+</div>
+<div th:if="${!hotels.isEmpty()}" class="container">
+    <div class="sidebar">
+        <h3>Filter by:</h3>
+        </form>
+        <form class="filter-group" action="hotels/filter" method="get">
+            <label>
+                <input class="checkbox" type="checkbox" name="isFreeWiFi" value="true"
+                       th:checked="${isFreeWiFi ?: false}"/>
+                Free WiFi
+                <input type="hidden" name="isFreeWiFi" value="false"/>
+            </label>
+            <label>
+                <input class="checkbox" type="checkbox" name="isSwimmingPool" value="true"
+                       th:checked="${isSwimmingPool ?: false}"/>
+                Swimming Pool
+                <input type="hidden" name="isSwimmingPool" value="false"/>
+            </label>
+            <label>
+                <input class="checkbox" type="checkbox" name="isParking" value="true"
+                       th:checked="${isParking ?: false}"/>
+                Parking
+                <input type="hidden" name="isParking" value="false"/>
+            </label>
+            <label>
+                <input class="checkbox" type="checkbox" name="isFitnessCenter" value="true"
+                       th:checked="${isFitnessCenter ?: false}"/>
+                Fitness Center
+                <input type="hidden" name="isFitnessCenter" value="false"/>
+            </label>
+            <button type="submit">Filter</button>
+        </form>
+    </div>
+    <div class="hotel-list">
+        <div class="hotel-card" th:each="hotel: ${hotels}">
+            <div class="hotel-image">
+                <img th:src="@{/get-image(img=${hotel.rooms[0].imageUrls[0]})}" alt="Hotel Image">
+            </div>
+            <div class="hotel-details">
+                <div class="hotel-name" th:text="${hotel.getName()}">
+                    <span class="hotel-rating" th:each="i : ${#numbers.sequence(1, hotel.getRate().values())}">*</span>
+                </div>
+                <div th:text="${'Hotel in ' + hotel.getCity() + ' ' + hotel.getCountry()}"></div>
+                <div th:text="${hotel.getDescription()}"></div>
+                <div>Rating <span class="hotel-rating" th:text="${hotel.getRate().name()}"></span></div>
+                <div class="price" th:text="${'AMD ' +  hotel.getRooms()[0].getPricePerNight() + ' per night'}"></div>
+                <button class="button">Check availability</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div th:if="${hotels.totalPages > 0}" class="pagination"
      th:each="pageNumber : ${pageNumbers}">
-    <a th:href="@{/hotels(pageSize=${hotels.size}, pageNumber=${pageNumber})}"
+    <a th:href="@{/(pageSize=${hotels.size}, pageNumber=${pageNumber})}"
        th:text="${pageNumber}"
-       th:class="${pageNumber==hotels.number + 1} ? active"></a>
+       th:class="${pageNumber == hotels.number + 1} ? active"></a>
 </div>
-<a href="/rooms/add">Room</a><br>
-<a href="/hotels">Hotel</a><br>
+<a href="/rooms/add">Add Room</a><br>
+<a href="/hotels/add">Add Hotel</a><br>
 </body>
 </html>

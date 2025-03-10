@@ -21,7 +21,7 @@ public class Room {
   private String bedType;
   private int roomNumber;
   private double pricePerNight;
-
+  
   @ElementCollection
   private List<String> imageUrls;
 

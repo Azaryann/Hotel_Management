@@ -5,7 +5,6 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -16,7 +15,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
 import java.util.List;
 
 @Setter
@@ -26,7 +24,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Hotel {
-
+  
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
@@ -34,12 +32,10 @@ public class Hotel {
   private String description;
   private String city;
   private String country;
-  private double longitude;
-  private double latitude;
 
   @Enumerated(EnumType.STRING)
   private Rate rate;
 
-  @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+  @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Room> rooms;
 }

@@ -23,7 +23,10 @@ public class RoomMapper {
       .isSwimmingPool(room.getIsSwimmingPool())
       .isParking(room.getIsParking())
       .isFitnessCenter(room.getIsFitnessCenter())
+      .hotel(room.getHotel())
       .build();
+
+
 
   public static final UnaryOperator<Room> mapToEditRoomResponse = room -> Room.builder()
       .roomNumber(room.getRoomNumber())

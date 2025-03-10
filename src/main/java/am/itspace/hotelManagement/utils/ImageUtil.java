@@ -14,7 +14,7 @@ import java.util.UUID;
 @UtilityClass
 public class ImageUtil {
 
-  public static List<String> generateImages(List<MultipartFile> multipartFiles, String uploadPath) {
+  public static List<String> generateMultiImages(List<MultipartFile> multipartFiles, String uploadPath) {
     List<String> imageUrls = new ArrayList<>();
     for (MultipartFile image : multipartFiles) {
       String filename = UUID.randomUUID() + "_" + image.getOriginalFilename();

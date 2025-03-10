@@ -11,6 +11,11 @@ import java.util.function.Function;
 public class HotelSpecification {
 
   private static final String ROOMS = "rooms";
+  private static final String IS_FREE_WIFI ="isFreeWiFi";
+  private static final String IS_SWIMMING_POOL = "isSwimmingPool";
+  private static final String IS_PARKING = "isParking";
+  private static final String IS_FITNESS_CENTER = "isFitnessCenter";
+  private static final String RATE = "rate";
 
   private HotelSpecification() {}
 
@@ -18,28 +23,29 @@ public class HotelSpecification {
       ((root, query, criteriaBuilder) -> {
         if (isFreeWiFi == null) return null;
         Join<Hotel, Room> roomJoin = root.join(ROOMS, JoinType.INNER);
-        return criteriaBuilder.equal(roomJoin.get("isFreeWiFi"), isFreeWiFi);
+        return criteriaBuilder.equal(roomJoin.get(IS_FREE_WIFI), isFreeWiFi);
       });
 
   public static final Function<Boolean, Specification<Hotel>> hasRoomWithSwimmingPool = isSwimmingPool ->
       ((root, query, criteriaBuilder) -> {
         if (isSwimmingPool == null) return null;
         Join<Hotel, Room> roomJoin = root.join(ROOMS, JoinType.INNER);
-        return criteriaBuilder.equal(roomJoin.get("isSwimmingPool"), isSwimmingPool);
+        return criteriaBuilder.equal(roomJoin.get(IS_SWIMMING_POOL), isSwimmingPool);
       });
 
   public static final Function<Boolean, Specification<Hotel>> hasRoomWithParking = isParking ->
       ((root, query, criteriaBuilder) -> {
         if (isParking == null) return null;
         Join<Hotel, Room> roomJoin = root.join(ROOMS, JoinType.INNER);
-        return criteriaBuilder.equal(roomJoin.get("isParking"), isParking);
+        return criteriaBuilder.equal(roomJoin.get(IS_PARKING), isParking);
       });
 
   public static final Function<Boolean, Specification<Hotel>> hasRoomWithFitnessCenter = isFitnessCenter ->
       ((root, query, criteriaBuilder) -> {
         if (isFitnessCenter == null) return null;
         Join<Hotel, Room> roomJoin = root.join(ROOMS, JoinType.INNER);
-        return criteriaBuilder.equal(roomJoin.get("isFitnessCenter"), isFitnessCenter);
+        return criteriaBuilder.equal(roomJoin.get(IS_FITNESS_CENTER), isFitnessCenter);
       });
+
 
 }
