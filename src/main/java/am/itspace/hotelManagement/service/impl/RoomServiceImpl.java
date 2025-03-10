@@ -3,8 +3,8 @@ package am.itspace.hotelManagement.service.impl;
 import am.itspace.hotelManagement.dto.request.RoomRequest;
 import am.itspace.hotelManagement.dto.response.RoomResponse;
 import am.itspace.hotelManagement.mapper.RoomMapper;
-import am.itspace.hotelManagement.model.Hotel;
-import am.itspace.hotelManagement.model.Room;
+import am.itspace.hotelManagement.entity.Hotel;
+import am.itspace.hotelManagement.entity.Room;
 import am.itspace.hotelManagement.repository.HotelRepository;
 import am.itspace.hotelManagement.repository.RoomRepository;
 import am.itspace.hotelManagement.service.RoomService;
@@ -12,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -81,13 +80,20 @@ public class RoomServiceImpl implements RoomService {
         .orElseThrow(() -> new RuntimeException("Room not found"));
   }
 
+  public List<RoomResponse> getRoomsByHotelId(long hotelId) {
+    List<Room> rooms = this.roomRepository.findByHotelId(hotelId);
+    if (rooms.isEmpty()) log.error("No rooms found");
+
+    return rooms.stream()
+        .map(room -> RoomMapper.mapToRoomResponse.apply(room))
+        .toList();
+  }
+
   @Override
   public void deleteRoomById(long roomId) {
     this.roomRepository.findById(roomId)
         .ifPresentOrElse(room -> this.roomRepository.delete(room),
-            () -> {
-              log.error("Room with id {} not found", roomId);
-            });
+            () -> log.error("Room with id {} not found", roomId));
   }
 
   @Override

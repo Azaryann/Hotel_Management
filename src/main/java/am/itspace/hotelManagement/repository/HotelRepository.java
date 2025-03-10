@@ -1,6 +1,7 @@
 package am.itspace.hotelManagement.repository;
 
-import am.itspace.hotelManagement.model.Hotel;
+
+import am.itspace.hotelManagement.entity.Hotel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 

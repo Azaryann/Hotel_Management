@@ -3,9 +3,9 @@ package am.itspace.hotelManagement.service.impl;
 import am.itspace.hotelManagement.dto.request.HotelRequest;
 import am.itspace.hotelManagement.dto.response.HotelResponse;
 import am.itspace.hotelManagement.dto.response.HotelResponseDto;
+import am.itspace.hotelManagement.entity.Hotel;
 import am.itspace.hotelManagement.enums.Rate;
 import am.itspace.hotelManagement.mapper.HotelMapper;
-import am.itspace.hotelManagement.model.Hotel;
 import am.itspace.hotelManagement.repository.HotelRepository;
 import am.itspace.hotelManagement.service.HotelService;
 import am.itspace.hotelManagement.specification.HotelSpecification;
@@ -101,7 +101,7 @@ public class HotelServiceImpl implements HotelService {
 
     if (rates != null && !rates.isEmpty()) {
       List<Rate> rate = rates.stream().toList();
-      specification = specification.and(HotelSpecification.hasRate.apply(rate));
+      specification = specification.or(HotelSpecification.hasRate.apply(rate));
     }
 
     Pageable pageable = PageRequest.of(page - 1, size);
