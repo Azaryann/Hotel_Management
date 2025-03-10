@@ -2,7 +2,6 @@ package am.itspace.hotelManagement.controller;
 
 import am.itspace.hotelManagement.dto.request.HotelRequest;
 import am.itspace.hotelManagement.dto.response.HotelResponseDto;
-import am.itspace.hotelManagement.enums.Rate;
 import am.itspace.hotelManagement.service.HotelService;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;

@@ -15,7 +15,6 @@ public class HotelSpecification {
   private static final String IS_SWIMMING_POOL = "isSwimmingPool";
   private static final String IS_PARKING = "isParking";
   private static final String IS_FITNESS_CENTER = "isFitnessCenter";
-  private static final String RATE = "rate";
 
   private HotelSpecification() {}
 
