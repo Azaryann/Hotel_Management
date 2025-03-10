@@ -1,4 +1,4 @@
-package am.itspace.hotelManagement.model;
+package am.itspace.hotelManagement.entity;
 
 import am.itspace.hotelManagement.enums.Rate;
 import jakarta.persistence.CascadeType;

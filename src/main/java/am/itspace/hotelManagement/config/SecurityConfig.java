@@ -17,7 +17,13 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorize) ->
                         authorize.requestMatchers("/register/**").permitAll()
                                 .requestMatchers("/", "/index").permitAll()
+                                .requestMatchers("/templates/**").permitAll()
+                                .requestMatchers("/css/**").permitAll()
                                 .requestMatchers("/verify").permitAll()
+
+                                .requestMatchers("/hotels/**").permitAll()
+                                .requestMatchers("/rooms/**").permitAll()
+
                                 .requestMatchers("/users").permitAll()
                                 .requestMatchers("/users/edit/**").hasRole("ADMIN")
                                 .requestMatchers("/users/update").hasRole("ADMIN")

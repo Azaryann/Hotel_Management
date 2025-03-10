@@ -5,7 +5,7 @@ import am.itspace.hotelManagement.dto.response.HotelResponse;
 import am.itspace.hotelManagement.dto.response.HotelResponseDto;
 import am.itspace.hotelManagement.enums.Rate;
 import am.itspace.hotelManagement.mapper.HotelMapper;
-import am.itspace.hotelManagement.model.Hotel;
+import am.itspace.hotelManagement.entity.Hotel;
 import am.itspace.hotelManagement.repository.HotelRepository;
 import am.itspace.hotelManagement.service.HotelService;
 import am.itspace.hotelManagement.specification.HotelSpecification;

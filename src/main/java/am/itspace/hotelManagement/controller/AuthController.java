@@ -5,7 +5,6 @@ import am.itspace.hotelManagement.dto.UpdateUserDto;
 import am.itspace.hotelManagement.entity.User;
 import am.itspace.hotelManagement.service.UserService;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,11 +21,6 @@ public class AuthController {
 
     public AuthController(UserService userService) {
         this.userService = userService;
-    }
-
-    @GetMapping({"/", "index"})
-    public String home() {
-        return "index";
     }
 
     @GetMapping("/login")

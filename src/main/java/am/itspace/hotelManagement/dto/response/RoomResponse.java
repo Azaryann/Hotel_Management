@@ -1,7 +1,7 @@
 package am.itspace.hotelManagement.dto.response;
 
 import am.itspace.hotelManagement.enums.RoomStatus;
-import am.itspace.hotelManagement.model.Hotel;
+import am.itspace.hotelManagement.entity.Hotel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

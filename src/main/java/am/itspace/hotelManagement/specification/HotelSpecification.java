@@ -1,8 +1,8 @@
 package am.itspace.hotelManagement.specification;
 
 import am.itspace.hotelManagement.enums.Rate;
-import am.itspace.hotelManagement.model.Hotel;
-import am.itspace.hotelManagement.model.Room;
+import am.itspace.hotelManagement.entity.Hotel;
+import am.itspace.hotelManagement.entity.Room;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.JoinType;
 import org.springframework.data.jpa.domain.Specification;

@@ -3,8 +3,8 @@ package am.itspace.hotelManagement.service.impl;
 import am.itspace.hotelManagement.dto.request.RoomRequest;
 import am.itspace.hotelManagement.dto.response.RoomResponse;
 import am.itspace.hotelManagement.mapper.RoomMapper;
-import am.itspace.hotelManagement.model.Hotel;
-import am.itspace.hotelManagement.model.Room;
+import am.itspace.hotelManagement.entity.Hotel;
+import am.itspace.hotelManagement.entity.Room;
 import am.itspace.hotelManagement.repository.HotelRepository;
 import am.itspace.hotelManagement.repository.RoomRepository;
 import am.itspace.hotelManagement.service.RoomService;
@@ -12,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
