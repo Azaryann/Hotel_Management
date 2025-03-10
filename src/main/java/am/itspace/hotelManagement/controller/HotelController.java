@@ -2,6 +2,7 @@ package am.itspace.hotelManagement.controller;
 
 import am.itspace.hotelManagement.dto.request.HotelRequest;
 import am.itspace.hotelManagement.dto.response.HotelResponseDto;
+import am.itspace.hotelManagement.enums.Rate;
 import am.itspace.hotelManagement.service.HotelService;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -54,11 +55,12 @@ public class HotelController {
       @RequestParam(required = false) Boolean isSwimmingPool,
       @RequestParam(required = false) Boolean isParking,
       @RequestParam(required = false) Boolean isFitnessCenter,
+      @RequestParam(required = false) List<Rate> rate,
       @RequestParam(defaultValue = "1") int pageNumber,
       @RequestParam(defaultValue = "3") int pageSize
       ) {
     Page<HotelResponseDto> hotels = this.hotelService
-        .filterHotel(isFreeWiFi, isSwimmingPool, isParking, isFitnessCenter, pageNumber, pageSize);
+        .filterHotel(isFreeWiFi, isSwimmingPool, isParking, isFitnessCenter, rate, pageNumber, pageSize);
 
     int totalPage = hotels.getTotalPages();
     if (totalPage > 0) {
@@ -66,6 +68,7 @@ public class HotelController {
           .boxed()
           .toList();
       modelMap.put("pageNumbers", pageNumbers);
+      modelMap.put("selectedRates", rate);
     }
 
     modelMap.put("hotels", hotels);

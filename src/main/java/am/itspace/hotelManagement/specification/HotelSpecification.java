@@ -1,11 +1,13 @@
 package am.itspace.hotelManagement.specification;
 
+import am.itspace.hotelManagement.enums.Rate;
 import am.itspace.hotelManagement.model.Hotel;
 import am.itspace.hotelManagement.model.Room;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.JoinType;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.util.List;
 import java.util.function.Function;
 
 public class HotelSpecification {
@@ -46,5 +48,9 @@ public class HotelSpecification {
         return criteriaBuilder.equal(roomJoin.get(IS_FITNESS_CENTER), isFitnessCenter);
       });
 
-
+  public static final Function<List<Rate>, Specification<Hotel>> hasRate = rates ->
+      ((root, query, criteriaBuilder) -> {
+        if (rates == null || rates.isEmpty()) return criteriaBuilder.conjunction();
+        return root.get("rate").in(rates);
+      });
 }

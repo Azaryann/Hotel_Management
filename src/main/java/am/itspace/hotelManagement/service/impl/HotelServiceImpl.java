@@ -64,9 +64,8 @@ public class HotelServiceImpl implements HotelService {
 
     if (hotels.isEmpty()) log.error("hotel not found");
 
-    hotels.forEach(hotel -> {
-      hotel.setRooms(hotel.getRooms());
-    });
+    hotels.forEach(hotel -> hotel.setRooms(hotel.getRooms()));
+
     List<HotelResponseDto> filteredHotels = hotels.getContent().stream()
         .filter(hotel -> !hotel.getRooms().isEmpty())
         .map(hotel -> HotelMapper.mapToHotelResponseDto.apply(hotel))
@@ -81,6 +80,7 @@ public class HotelServiceImpl implements HotelService {
       Boolean isSwimmingPool,
       Boolean isParking,
       Boolean isFitnessCenter,
+      List<Rate> rates,
       int page,
       int size
   ) {
@@ -97,6 +97,11 @@ public class HotelServiceImpl implements HotelService {
     }
     if (Boolean.TRUE.equals(isFitnessCenter)) {
       specification = specification.or(HotelSpecification.hasRoomWithFitnessCenter.apply(true));
+    }
+
+    if (rates != null && !rates.isEmpty()) {
+      List<Rate> rate = rates.stream().toList();
+      specification = specification.and(HotelSpecification.hasRate.apply(rate));
     }
 
     Pageable pageable = PageRequest.of(page - 1, size);
