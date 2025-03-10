@@ -101,7 +101,7 @@ public class HotelServiceImpl implements HotelService {
 
     if (rates != null && !rates.isEmpty()) {
       List<Rate> rate = rates.stream().toList();
-      specification = specification.and(HotelSpecification.hasRate.apply(rate));
+      specification = specification.or(HotelSpecification.hasRate.apply(rate));
     }
 
     Pageable pageable = PageRequest.of(page - 1, size);
