@@ -4,7 +4,7 @@ import am.itspace.hotelManagement.dto.request.HotelRequest;
 import am.itspace.hotelManagement.dto.response.HotelResponse;
 import am.itspace.hotelManagement.dto.response.HotelResponseDto;
 import am.itspace.hotelManagement.enums.Rate;
-import am.itspace.hotelManagement.model.Hotel;
+import am.itspace.hotelManagement.entity.Hotel;
 import org.springframework.data.domain.Page;
 
 import java.util.List;

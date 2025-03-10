@@ -2,7 +2,7 @@ package am.itspace.hotelManagement.mapper;
 
 import am.itspace.hotelManagement.dto.response.HotelResponse;
 import am.itspace.hotelManagement.dto.response.HotelResponseDto;
-import am.itspace.hotelManagement.model.Hotel;
+import am.itspace.hotelManagement.entity.Hotel;
 
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
