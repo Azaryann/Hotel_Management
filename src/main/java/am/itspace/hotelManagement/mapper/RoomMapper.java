@@ -1,7 +1,7 @@
 package am.itspace.hotelManagement.mapper;
 
 import am.itspace.hotelManagement.dto.response.RoomResponse;
-import am.itspace.hotelManagement.model.Room;
+import am.itspace.hotelManagement.entity.Room;
 
 import java.util.function.Function;
 import java.util.function.UnaryOperator;

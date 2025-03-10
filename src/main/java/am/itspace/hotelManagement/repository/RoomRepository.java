@@ -1,7 +1,7 @@
 package am.itspace.hotelManagement.repository;
 
 import am.itspace.hotelManagement.enums.RoomStatus;
-import am.itspace.hotelManagement.model.Room;
+import am.itspace.hotelManagement.entity.Room;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
