@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" th:href="@{/header.css}">
+  <link rel="stylesheet" th:href="@{/main.css}">
+  <title>Main</title>
+</head>
+<body>
+<div th:replace="~{fragment/header::header}"></div>
+<div class="hotel-list-error" th:if="${hotels.isEmpty()}">
+  <h2 class="hotel-error-msg">Error 404 Hotel is not available. Please try later!</h2>
+</div>
+<div th:if="${!hotels.isEmpty()}" class="container">
+  <div class="sidebar">
+    <form method="get">
+      <div class="filter-group">
+        <label>
+          <input class="checkbox" type="checkbox" name="rate" value="FIVE"/>
+          ★★★★★ (Five)
+        </label>
+
+        <label>
+          <input class="checkbox" type="checkbox" name="rate" value="FOUR"/>
+          ★★★★☆ (Four)
+        </label>
+
+        <label>
+          <input class="checkbox" type="checkbox" name="rate" value="THREE"/>
+          ★★★☆☆ (Three)
+        </label>
+
+        <label>
+          <input class="checkbox" type="checkbox" name="rate" value="TWO"/>
+          ★★☆☆☆ (Two)
+        </label>
+
+        <label>
+          <input class="checkbox" type="checkbox" name="rate" value="ONE"/>
+          ★☆☆☆☆ (One)
+        </label>
+      </div>
+      <div class="filter-group">
+        <label>
+          <input class="checkbox" type="checkbox" name="isFreeWiFi" value="true"
+                 th:checked="${isFreeWiFi ?: false}"/>
+          Free WiFi
+          <input type="hidden" name="isFreeWiFi" value="false"/>
+        </label>
+        <label>
+          <input class="checkbox" type="checkbox" name="isSwimmingPool" value="true"
+                 th:checked="${isSwimmingPool ?: false}"/>
+          Swimming Pool
+          <input type="hidden" name="isSwimmingPool" value="false"/>
+        </label>
+        <label>
+          <input class="checkbox" type="checkbox" name="isParking" value="true"
+                 th:checked="${isParking ?: false}"/>
+          Parking
+          <input type="hidden" name="isParking" value="false"/>
+        </label>
+        <label>
+          <input class="checkbox" type="checkbox" name="isFitnessCenter" value="true"
+                 th:checked="${isFitnessCenter ?: false}"/>
+          Fitness Center
+          <input type="hidden" name="isFitnessCenter" value="false"/>
+        </label>
+        <button type="submit">Filter</button>
+      </div>
+    </form>
+  </div>
+  <div class="hotel-list">
+    <div class="hotel-card" th:each="hotel: ${hotels}">
+      <div class="hotel-image">
+        <img th:src="@{/get-image(img=${hotel.rooms[0].imageUrls[0]})}" alt="Hotel Image">
+      </div>
+      <div class="hotel-details">
+        <div class="hotel-name" th:text="${hotel.getName()}">
+          <span class="hotel-rating" th:each="i : ${#numbers.sequence(1, hotel.getRate().values())}">*</span>
+        </div>
+        <div th:text="${'Hotel in ' + hotel.getCity() + ' ' + hotel.getCountry()}"></div>
+        <div th:text="${hotel.getDescription()}"></div>
+        <div>Rating <span class="hotel-rating" th:text="${hotel.getRate().name()}"></span></div>
+        <div class="price" th:text="${'AMD ' +  hotel.getRooms()[0].getPricePerNight() + ' per night'}"></div>
+        <button class="button">
+          <a style="text-decoration: none; color: azure" th:href="@{/hotels/description(id=${hotel.getId()})}" th:text="'Check availability'"></a>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div th:if="${hotels.totalPages > 0}" class="pagination"
+     th:each="pageNumber : ${pageNumbers}">
+  <a th:href="@{/static(pageSize=${hotels.size}, pageNumber=${pageNumber})}"
+     th:text="${pageNumber}"
+     th:class="${pageNumber == hotels.number + 1} ? active"></a>
+</div>
+<a href="/rooms/add">Add Room</a><br>
+<a href="/hotels/add">Add Hotel</a><br>
+</body>
+</html>

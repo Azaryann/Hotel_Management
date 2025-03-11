@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Room Page</title>
+</head>
+<body>
+<h2>Add Room Page</h2>
+<form action="/rooms/add" th:object="${roomRequest}" method="post" enctype="multipart/form-data" >
+    Room Type: <input type="text" name="type"><br>
+    Bed Type: <input type="text" name="bedType"><br>
+    Room Number: <input type="number" name="roomNumber"><br>
+    Price Per Night: <input type="number" name="pricePerNight"><br>
+    Add Image <input type="file" name="images" multiple required><br>
+    Hotel: <input type="number" name="hotelId">
+    Status: <select name="roomStatus">
+    <option value="AVAILABLE">AVAILABLE</option>
+    <option value="OCCUPIED">OCCUPIED</option>
+</select><br><div th:if="${room != null and room.isFreeWiFi}">
+    Free Wifi <input type="checkbox" name="isFreeWiFi" th:checked="${room.isFreeWiFi}" th:value="true">
+</div>
+    <div th:unless="${room != null and room.isFreeWiFi}">  Free Wifi <input type="checkbox" name="isFreeWiFi" th:value="true">
+    </div>
+
+    <div th:if="${room != null and room.isSwimmingPool}">
+        Swimming Pool <input type="checkbox" name="isSwimmingPool" th:checked="${room.isSwimmingPool}" th:value="true">
+    </div>
+    <div th:unless="${room != null and room.isSwimmingPool}">
+        Swimming Pool <input type="checkbox" name="isSwimmingPool" th:value="true">
+    </div>
+
+    <div th:if="${room != null and room.isParking}">
+        Parking <input type="checkbox" name="isParking" th:checked="${room.isParking}" th:value="true">
+    </div>
+    <div th:unless="${room != null and room.isParking}">
+        Parking <input type="checkbox" name="isParking" th:value="true">
+    </div>
+
+    <div th:if="${room != null and room.isFitnessCenter}">
+        Fitness Center <input type="checkbox" name="isFitnessCenter" th:checked="${room.isFitnessCenter}" th:value="true" disabled>
+    </div>
+    <div th:unless="${room != null and room.isFitnessCenter}">
+        Fitness Center <input type="checkbox" name="isFitnessCenter" th:value="true">
+    </div>
+    <button type="submit">add</button>
+</form>
+</body>
+</html>
