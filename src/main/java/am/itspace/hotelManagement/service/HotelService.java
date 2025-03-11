@@ -23,6 +23,16 @@ public interface HotelService {
       int page,
       int size
   );
+  Page<HotelResponseDto> searchHotel(
+      Boolean isFreeWiFi,
+      Boolean isSwimmingPool,
+      Boolean isParking,
+      Boolean isFitnessCenter,
+      List<Rate> rate,
+      String name,
+      int page,
+      int size
+  );
   void deleteHotel(long hotelId);
   Hotel updateHotel(HotelRequest hotelRequest);
 }

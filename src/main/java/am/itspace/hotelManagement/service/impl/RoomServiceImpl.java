@@ -80,14 +80,6 @@ public class RoomServiceImpl implements RoomService {
         .orElseThrow(() -> new RuntimeException("Room not found"));
   }
 
-  public List<RoomResponse> getRoomsByHotelId(long hotelId) {
-    List<Room> rooms = this.roomRepository.findByHotelId(hotelId);
-    if (rooms.isEmpty()) log.error("No rooms found");
-
-    return rooms.stream()
-        .map(room -> RoomMapper.mapToRoomResponse.apply(room))
-        .toList();
-  }
 
   @Override
   public void deleteRoomById(long roomId) {

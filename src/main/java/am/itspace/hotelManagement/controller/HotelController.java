@@ -75,6 +75,34 @@ public class HotelController {
     return "hotel/filter";
   }
 
+  @GetMapping("/search")
+  public String filterHotel(
+      ModelMap modelMap,
+      @RequestParam(required = false) Boolean isFreeWiFi,
+      @RequestParam(required = false) Boolean isSwimmingPool,
+      @RequestParam(required = false) Boolean isParking,
+      @RequestParam(required = false) Boolean isFitnessCenter,
+      @RequestParam(required = false) List<Rate> rate,
+      @RequestParam(required = false) String name,
+      @RequestParam(defaultValue = "1") int pageNumber,
+      @RequestParam(defaultValue = "3") int pageSize
+  ) {
+    Page<HotelResponseDto> hotels = this.hotelService
+        .searchHotel(isFreeWiFi, isSwimmingPool, isParking, isFitnessCenter, rate,name, pageNumber, pageSize);
+
+    int totalPage = hotels.getTotalPages();
+    if (totalPage > 0) {
+      List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPage)
+          .boxed()
+          .toList();
+      modelMap.put("pageNumbers", pageNumbers);
+      modelMap.put("selectedRates", rate);
+      modelMap.put("searchName", name);
+    }
+
+    modelMap.put("hotels", hotels);
+    return "search";
+  }
 
   @PostMapping("/edit")
   public String updateRoom(@ModelAttribute HotelRequest hotelRequest) {

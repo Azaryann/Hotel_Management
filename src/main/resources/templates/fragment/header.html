@@ -4,10 +4,10 @@
     <div class="wrapper">
         <h2><a href="/">Logo</a></h2>
         <div class="search">
-            <form>
-                <input type="text">
+            <form th:action="@{/hotels/search}" method="get">
+                <input type="text" name="name" >
+                <button type="submit">Search</button>
             </form>
-            <button>Search</button>
         </div>
         <div class="buttons">
             <a href="/login">Login</a>

@@ -1,8 +1,8 @@
 package am.itspace.hotelManagement.specification;
 
-import am.itspace.hotelManagement.enums.Rate;
 import am.itspace.hotelManagement.entity.Hotel;
 import am.itspace.hotelManagement.entity.Room;
+import am.itspace.hotelManagement.enums.Rate;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.JoinType;
 import org.springframework.data.jpa.domain.Specification;
@@ -17,6 +17,7 @@ public class HotelSpecification {
   private static final String IS_SWIMMING_POOL = "isSwimmingPool";
   private static final String IS_PARKING = "isParking";
   private static final String IS_FITNESS_CENTER = "isFitnessCenter";
+  private static final String NAME = "name";
 
   private HotelSpecification() {}
 
@@ -53,4 +54,11 @@ public class HotelSpecification {
         if (rates == null || rates.isEmpty()) return criteriaBuilder.conjunction();
         return root.get("rate").in(rates);
       });
+
+  public static final Function<String, Specification<Hotel>> searchHotel = name ->
+      ((root, query, criteriaBuilder) -> {
+        if (name == null || name.trim().isEmpty()) return criteriaBuilder.conjunction();
+        return criteriaBuilder.like(criteriaBuilder.lower(root.get(NAME)), "%" + name.toLowerCase() + "%");
+      });
+
 }
