@@ -3,9 +3,9 @@ package am.itspace.hotelManagement.service.impl;
 import am.itspace.hotelManagement.dto.request.HotelRequest;
 import am.itspace.hotelManagement.dto.response.HotelResponse;
 import am.itspace.hotelManagement.dto.response.HotelResponseDto;
+import am.itspace.hotelManagement.entity.Hotel;
 import am.itspace.hotelManagement.enums.Rate;
 import am.itspace.hotelManagement.mapper.HotelMapper;
-import am.itspace.hotelManagement.entity.Hotel;
 import am.itspace.hotelManagement.repository.HotelRepository;
 import am.itspace.hotelManagement.service.HotelService;
 import am.itspace.hotelManagement.specification.HotelSpecification;
@@ -36,13 +36,13 @@ public class HotelServiceImpl implements HotelService {
   public HotelResponse addHotel(HotelRequest hotelRequest) {
 
     Hotel hotel = Hotel.builder()
-        .id(hotelRequest.getId())
-        .name(hotelRequest.getName())
-        .description(hotelRequest.getDescription())
-        .city(hotelRequest.getCity())
-        .country(hotelRequest.getCountry())
-        .rate(hotelRequest.getRate())
-        .build();
+            .id(hotelRequest.getId())
+            .name(hotelRequest.getName())
+            .description(hotelRequest.getDescription())
+            .city(hotelRequest.getCity())
+            .country(hotelRequest.getCountry())
+            .rate(hotelRequest.getRate())
+            .build();
 
     Hotel savedHotel = this.hotelRepository.save(hotel);
     log.info("Hotel created successfully: {}", savedHotel);
@@ -53,8 +53,8 @@ public class HotelServiceImpl implements HotelService {
   @Override
   public Optional<HotelResponseDto> getHotelById(long hotelId) {
     return Optional.of(this.hotelRepository.findById(hotelId)
-            .map(hotel -> HotelMapper.mapToHotelResponseDto.apply(hotel)))
-        .orElseThrow(() -> new RuntimeException("hotel with id " + hotelId + " not found"));
+                    .map(hotel -> HotelMapper.mapToHotelResponseDto.apply(hotel)))
+            .orElseThrow(() -> new RuntimeException("hotel with id " + hotelId + " not found"));
   }
 
   @Override
@@ -67,22 +67,22 @@ public class HotelServiceImpl implements HotelService {
     hotels.forEach(hotel -> hotel.setRooms(hotel.getRooms()));
 
     List<HotelResponseDto> filteredHotels = hotels.getContent().stream()
-        .filter(hotel -> !hotel.getRooms().isEmpty())
-        .map(hotel -> HotelMapper.mapToHotelResponseDto.apply(hotel))
-        .toList();
+            .filter(hotel -> !hotel.getRooms().isEmpty())
+            .map(hotel -> HotelMapper.mapToHotelResponseDto.apply(hotel))
+            .toList();
 
     return new PageImpl<>(filteredHotels, pageable, hotels.getTotalElements());
   }
 
   @Override
   public Page<HotelResponseDto> filterHotel(
-      Boolean isFreeWiFi,
-      Boolean isSwimmingPool,
-      Boolean isParking,
-      Boolean isFitnessCenter,
-      List<Rate> rates,
-      int page,
-      int size
+          Boolean isFreeWiFi,
+          Boolean isSwimmingPool,
+          Boolean isParking,
+          Boolean isFitnessCenter,
+          List<Rate> rates,
+          int page,
+          int size
   ) {
     Specification<Hotel> specification = Specification.where(null);
 
@@ -109,16 +109,61 @@ public class HotelServiceImpl implements HotelService {
 
 
     List<HotelResponseDto> filteredHotels = hotels.stream()
-        .map(hotel -> HotelMapper.mapToHotelResponseDto.apply(hotel))
-        .toList();
+            .map(hotel -> HotelMapper.mapToHotelResponseDto.apply(hotel))
+            .toList();
+    return new PageImpl<>(filteredHotels, pageable, hotels.getTotalElements());
+  }
+
+  @Override
+  public Page<HotelResponseDto> searchHotel(
+          Boolean isFreeWiFi,
+          Boolean isSwimmingPool,
+          Boolean isParking,
+          Boolean isFitnessCenter,
+          List<Rate> rates,
+          String name,
+          int page,
+          int size
+  ) {
+    Specification<Hotel> specification = Specification.where(null);
+
+    if (Boolean.TRUE.equals(isFreeWiFi)) {
+      specification = specification.or(HotelSpecification.hasRoomWithFreeWiFi.apply(true));
+    }
+    if (Boolean.TRUE.equals(isSwimmingPool)) {
+      specification = specification.or(HotelSpecification.hasRoomWithSwimmingPool.apply(true));
+    }
+    if (Boolean.TRUE.equals(isParking)) {
+      specification = specification.or(HotelSpecification.hasRoomWithParking.apply(true));
+    }
+    if (Boolean.TRUE.equals(isFitnessCenter)) {
+      specification = specification.or(HotelSpecification.hasRoomWithFitnessCenter.apply(true));
+    }
+
+    if (rates != null && !rates.isEmpty()) {
+      List<Rate> rate = rates.stream().toList();
+      specification = specification.or(HotelSpecification.hasRate.apply(rate));
+    }
+
+    if (name != null && !name.isEmpty()) {
+      specification = specification.and(HotelSpecification.searchHotel.apply(name));
+    }
+
+    Pageable pageable = PageRequest.of(page - 1, size);
+    Page<Hotel> hotels = this.hotelRepository.findAll(specification, pageable);
+
+
+    List<HotelResponseDto> filteredHotels = hotels.stream()
+            .map(hotel -> HotelMapper.mapToHotelResponseDto.apply(hotel))
+            .toList();
     return new PageImpl<>(filteredHotels, pageable, hotels.getTotalElements());
   }
 
   @Override
   public void deleteHotel(long hotelId) {
     this.hotelRepository.findById(hotelId)
-        .ifPresentOrElse(hotel -> this.hotelRepository.delete(hotel),
-            () -> log.error("hotel not found"));
+            .ifPresentOrElse(hotel -> this.hotelRepository.delete(hotel),
+                    () -> log.error("hotel not found"));
   }
 
   @Override

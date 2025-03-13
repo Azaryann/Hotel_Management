@@ -14,7 +14,7 @@
 </div>
 <div th:if="${!hotels.isEmpty()}" class="container">
     <div class="sidebar">
-        <form action="hotels/filter" method="get">
+        <form method="get">
             <div class="filter-group">
                 <label>
                     <input class="checkbox" type="checkbox" name="rate" value="FIVE"/>
@@ -92,7 +92,7 @@
 </div>
 <div th:if="${hotels.totalPages > 0}" class="pagination"
      th:each="pageNumber : ${pageNumbers}">
-    <a th:href="@{/(pageSize=${hotels.size}, pageNumber=${pageNumber})}"
+    <a th:href="@{/static(pageSize=${hotels.size}, pageNumber=${pageNumber})}"
        th:text="${pageNumber}"
        th:class="${pageNumber == hotels.number + 1} ? active"></a>
 </div>

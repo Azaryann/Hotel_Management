@@ -14,7 +14,6 @@ import java.util.Optional;
 import java.util.stream.IntStream;
 
 @Controller
-@RequestMapping("/hotels")
 public class HotelController {
 
   private final HotelService hotelService;
@@ -23,50 +22,50 @@ public class HotelController {
     this.hotelService = hotelService;
   }
 
-  @GetMapping("/add")
+  @GetMapping("/hotels/add")
   public String addHotelPage() {
     return "hotel/addHotel";
   }
 
-  @PostMapping("/add")
+  @PostMapping("/hotels/add")
   public String addHotel(@ModelAttribute HotelRequest hotelRequest) {
     this.hotelService.addHotel(hotelRequest);
     return "redirect:/";
   }
 
-  @GetMapping("/description")
+  @GetMapping("/hotels/description")
   public String getRoomById(ModelMap modelMap, @RequestParam("id") long id) {
     Optional<HotelResponseDto> optionalHotel = this.hotelService.getHotelById(id);
     optionalHotel.ifPresent(hotel -> modelMap.put("hotel", hotel));
     return optionalHotel.isPresent() ? "hotel/hotelById" : "redirect:/";
   }
 
-  @GetMapping("/edit")
+  @GetMapping("/hotels/edit")
   public String updateRoomPage(@RequestParam("id") long id, ModelMap modelMap) {
     Optional<HotelResponseDto> optionalHotel = this.hotelService.getHotelById(id);
     optionalHotel.ifPresent(hotel -> modelMap.put("hotel", hotel));
     return "hotel/editHotel";
   }
 
-  @GetMapping("/filter")
+  @GetMapping("/hotels/filter")
   public String filterHotel(
-      ModelMap modelMap,
-      @RequestParam(required = false) Boolean isFreeWiFi,
-      @RequestParam(required = false) Boolean isSwimmingPool,
-      @RequestParam(required = false) Boolean isParking,
-      @RequestParam(required = false) Boolean isFitnessCenter,
-      @RequestParam(required = false) List<Rate> rate,
-      @RequestParam(defaultValue = "1") int pageNumber,
-      @RequestParam(defaultValue = "3") int pageSize
-      ) {
+          ModelMap modelMap,
+          @RequestParam(required = false) Boolean isFreeWiFi,
+          @RequestParam(required = false) Boolean isSwimmingPool,
+          @RequestParam(required = false) Boolean isParking,
+          @RequestParam(required = false) Boolean isFitnessCenter,
+          @RequestParam(required = false) List<Rate> rate,
+          @RequestParam(defaultValue = "1") int pageNumber,
+          @RequestParam(defaultValue = "3") int pageSize
+  ) {
     Page<HotelResponseDto> hotels = this.hotelService
-        .filterHotel(isFreeWiFi, isSwimmingPool, isParking, isFitnessCenter, rate, pageNumber, pageSize);
+            .filterHotel(isFreeWiFi, isSwimmingPool, isParking, isFitnessCenter, rate, pageNumber, pageSize);
 
     int totalPage = hotels.getTotalPages();
     if (totalPage > 0) {
       List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPage)
-          .boxed()
-          .toList();
+              .boxed()
+              .toList();
       modelMap.put("pageNumbers", pageNumbers);
       modelMap.put("selectedRates", rate);
     }
@@ -75,14 +74,42 @@ public class HotelController {
     return "hotel/filter";
   }
 
+  @GetMapping("/hotels/search")
+  public String filterHotel(
+          ModelMap modelMap,
+          @RequestParam(required = false) Boolean isFreeWiFi,
+          @RequestParam(required = false) Boolean isSwimmingPool,
+          @RequestParam(required = false) Boolean isParking,
+          @RequestParam(required = false) Boolean isFitnessCenter,
+          @RequestParam(required = false) List<Rate> rate,
+          @RequestParam(required = false) String name,
+          @RequestParam(defaultValue = "1") int pageNumber,
+          @RequestParam(defaultValue = "3") int pageSize
+  ) {
+    Page<HotelResponseDto> hotels = this.hotelService
+            .searchHotel(isFreeWiFi, isSwimmingPool, isParking, isFitnessCenter, rate,name, pageNumber, pageSize);
 
-  @PostMapping("/edit")
+    int totalPage = hotels.getTotalPages();
+    if (totalPage > 0) {
+      List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPage)
+              .boxed()
+              .toList();
+      modelMap.put("pageNumbers", pageNumbers);
+      modelMap.put("selectedRates", rate);
+      modelMap.put("searchName", name);
+    }
+
+    modelMap.put("hotels", hotels);
+    return "search";
+  }
+
+  @PostMapping("/hotels/edit")
   public String updateRoom(@ModelAttribute HotelRequest hotelRequest) {
     this.hotelService.updateHotel(hotelRequest);
     return "redirect:/hotels";
   }
 
-  @GetMapping("/delete")
+  @GetMapping("/hotels/delete")
   public String deleteRoom(@RequestParam("id") long id) {
     this.hotelService.deleteHotel(id);
     return "redirect:/";

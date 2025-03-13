@@ -16,13 +16,14 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests((authorize) ->
                         authorize.requestMatchers("/register/**").permitAll()
-                                .requestMatchers("/", "/index").permitAll()
+                                .requestMatchers("/").permitAll()
+                                .requestMatchers("/index").permitAll()
                                 .requestMatchers("/templates/**").permitAll()
                                 .requestMatchers("/css/**").permitAll()
                                 .requestMatchers("/verify").permitAll()
 
-                                .requestMatchers("/hotels/**").permitAll()
                                 .requestMatchers("/rooms/**").permitAll()
+                                .requestMatchers("/hotels/**").permitAll()
 
                                 .requestMatchers("/users").permitAll()
                                 .requestMatchers("/users/edit/**").hasRole("ADMIN")

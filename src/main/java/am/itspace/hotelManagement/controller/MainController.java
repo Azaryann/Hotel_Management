@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 @Controller
-@RequestMapping("/")
 public class MainController {
 
   private final HotelService hotelService;
@@ -29,18 +28,18 @@ public class MainController {
     this.hotelService = hotelService;
   }
 
-  @GetMapping
+  @GetMapping("/")
   public String mainPage(
-      @RequestParam(defaultValue = "1") int pageNumber,
-      @RequestParam(defaultValue = "3") int pageSize,
-      ModelMap modelMap
+          @RequestParam(defaultValue = "1") int pageNumber,
+          @RequestParam(defaultValue = "3") int pageSize,
+          ModelMap modelMap
   ) {
     Page<HotelResponseDto> hotels = this.hotelService.getAllHotels(pageNumber, pageSize);
     int totalPage = hotels.getTotalPages();
     if (totalPage > 0) {
       List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPage)
-          .boxed()
-          .toList();
+              .boxed()
+              .toList();
       modelMap.put("pageNumbers", pageNumbers);
     }
     modelMap.put("hotels", hotels);

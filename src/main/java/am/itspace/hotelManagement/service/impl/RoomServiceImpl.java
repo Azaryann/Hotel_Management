@@ -44,19 +44,19 @@ public class RoomServiceImpl implements RoomService {
     Hotel hotel = optionalHotel.get();
 
     Room room = Room.builder()
-        .id(roomRequest.getId())
-        .type(roomRequest.getType())
-        .bedType(roomRequest.getBedType())
-        .roomNumber(roomRequest.getRoomNumber())
-        .pricePerNight(roomRequest.getPricePerNight())
-        .imageUrls(imageUrls)
-        .roomStatus(roomRequest.getRoomStatus())
-        .isFreeWiFi(roomRequest.getIsFreeWiFi() != null && roomRequest.getIsFreeWiFi())
-        .isSwimmingPool(roomRequest.getIsSwimmingPool() != null && roomRequest.getIsSwimmingPool())
-        .isParking(roomRequest.getIsParking() != null && roomRequest.getIsParking())
-        .isFitnessCenter(roomRequest.getIsFitnessCenter() != null && roomRequest.getIsFitnessCenter())
-        .hotel(hotel)
-        .build();
+            .id(roomRequest.getId())
+            .type(roomRequest.getType())
+            .bedType(roomRequest.getBedType())
+            .roomNumber(roomRequest.getRoomNumber())
+            .pricePerNight(roomRequest.getPricePerNight())
+            .imageUrls(imageUrls)
+            .roomStatus(roomRequest.getRoomStatus())
+            .isFreeWiFi(roomRequest.getIsFreeWiFi() != null && roomRequest.getIsFreeWiFi())
+            .isSwimmingPool(roomRequest.getIsSwimmingPool() != null && roomRequest.getIsSwimmingPool())
+            .isParking(roomRequest.getIsParking() != null && roomRequest.getIsParking())
+            .isFitnessCenter(roomRequest.getIsFitnessCenter() != null && roomRequest.getIsFitnessCenter())
+            .hotel(hotel)
+            .build();
 
     Room savedRoom = this.roomRepository.save(room);
     log.info("Room created: {}", savedRoom);
@@ -69,24 +69,23 @@ public class RoomServiceImpl implements RoomService {
     List<Room> rooms = this.roomRepository.findAll();
     if (rooms.isEmpty()) log.error("No rooms found");
     return rooms.stream()
-        .map(room -> RoomMapper.mapToRoomResponse.apply(room))
-        .toList();
+            .map(room -> RoomMapper.mapToRoomResponse.apply(room))
+            .toList();
   }
 
   @Override
   public Optional<RoomResponse> getRoomById(long roomId) {
     return Optional.of(this.roomRepository.findById(roomId)
-            .map(room -> RoomMapper.mapToRoomResponse.apply(room)))
-        .orElseThrow(() -> new RuntimeException("Room not found"));
+                    .map(room -> RoomMapper.mapToRoomResponse.apply(room)))
+            .orElseThrow(() -> new RuntimeException("Room not found"));
   }
+
 
   @Override
   public void deleteRoomById(long roomId) {
     this.roomRepository.findById(roomId)
-        .ifPresentOrElse(room -> this.roomRepository.delete(room),
-            () -> {
-              log.error("Room with id {} not found", roomId);
-            });
+            .ifPresentOrElse(room -> this.roomRepository.delete(room),
+                    () -> log.error("Room with id {} not found", roomId));
   }
 
   @Override

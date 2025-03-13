@@ -2,8 +2,8 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <link rel="stylesheet" th:href="@{/css/header.css}">
-  <link rel="stylesheet" th:href="@{/css/main.css}">
+  <link rel="stylesheet" th:href="@{css/header.css}">
+  <link rel="stylesheet" th:href="@{css/main.css}">
   <title>Title</title>
 </head>
 <body>
@@ -13,58 +13,58 @@
 </div>
 <div th:if="${!hotels.isEmpty()}" class="container">
   <div class="sidebar">
-    <form class="filter-group" method="get">
-      <label>
-        <input class="checkbox" type="checkbox" name="rate" value="FIVE" />
-        ★★★★★ (Five)
-      </label>
+    <form method="get">
+      <div class="filter-group">
+        <label>
+          <input class="checkbox" type="checkbox" name="rate" value="FIVE"/>
+          ★★★★★ (Five)
+        </label>
 
-      <label>
-        <input class="checkbox" type="checkbox" name="rate" value="FOUR" />
-        ★★★★☆ (Four)
-      </label>
+        <label>
+          <input class="checkbox" type="checkbox" name="rate" value="FOUR"/>
+          ★★★★☆ (Four)
+        </label>
 
-      <label>
-        <input class="checkbox" type="checkbox" name="rate" value="THREE" />
-        ★★★☆☆ (Three)
-      </label>
+        <label>
+          <input class="checkbox" type="checkbox" name="rate" value="THREE"/>
+          ★★★☆☆ (Three)
+        </label>
 
-      <label>
-        <input class="checkbox" type="checkbox" name="rate" value="TWO" />
-        ★★☆☆☆ (Two)
-      </label>
+        <label>
+          <input class="checkbox" type="checkbox" name="rate" value="TWO"/>
+          ★★☆☆☆ (Two)
+        </label>
 
-      <label>
-        <input class="checkbox" type="checkbox" name="rate" value="ONE" />
-        ★☆☆☆☆ (One)
-      </label>
-      <button type="submit">Filter</button>
-    </form>
-    <h3>Filter by:</h3>
-    <form class="filter-group" method="get">
-      <label>
-        <input class="checkbox" type="checkbox" name="isFreeWiFi" value="true" th:checked="${isFreeWiFi ?: false}"/>
-        Free WiFi
-        <input type="hidden" name="isFreeWiFi" value="false"/>
-      </label>
-      <label>
-        <input class="checkbox" type="checkbox" name="isSwimmingPool" value="true"
-               th:checked="${isSwimmingPool ?: false}"/>
-        Swimming Pool
-        <input type="hidden" name="isSwimmingPool" value="false"/>
-      </label>
-      <label>
-        <input class="checkbox" type="checkbox" name="isParking" value="true" th:checked="${isParking ?: false}"/>
-        Parking
-        <input type="hidden" name="isParking" value="false"/>
-      </label>
-      <label>
-        <input class="checkbox" type="checkbox" name="isFitnessCenter" value="true"
-               th:checked="${isFitnessCenter ?: false}"/>
-        Fitness Center
-        <input type="hidden" name="isFitnessCenter" value="false"/>
-      </label>
-      <button type="submit">Filter</button>
+        <label>
+          <input class="checkbox" type="checkbox" name="rate" value="ONE"/>
+          ★☆☆☆☆ (One)
+        </label>
+      </div>
+      <div class="filter-group">
+        <label>
+          <input class="checkbox" type="checkbox" name="isFreeWiFi" value="true" th:checked="${isFreeWiFi ?: false}"/>
+          Free WiFi
+          <input type="hidden" name="isFreeWiFi" value="false"/>
+        </label>
+        <label>
+          <input class="checkbox" type="checkbox" name="isSwimmingPool" value="true"
+                 th:checked="${isSwimmingPool ?: false}"/>
+          Swimming Pool
+          <input type="hidden" name="isSwimmingPool" value="false"/>
+        </label>
+        <label>
+          <input class="checkbox" type="checkbox" name="isParking" value="true" th:checked="${isParking ?: false}"/>
+          Parking
+          <input type="hidden" name="isParking" value="false"/>
+        </label>
+        <label>
+          <input class="checkbox" type="checkbox" name="isFitnessCenter" value="true"
+                 th:checked="${isFitnessCenter ?: false}"/>
+          Fitness Center
+          <input type="hidden" name="isFitnessCenter" value="false"/>
+        </label>
+        <button type="submit">Filter</button>
+      </div>
     </form>
   </div>
   <div class="hotel-list">

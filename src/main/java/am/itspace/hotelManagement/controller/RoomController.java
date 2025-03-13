@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/rooms")
 public class RoomController {
 
   private final RoomService roomService;
@@ -21,19 +20,19 @@ public class RoomController {
   }
 
   // Admin
-  @GetMapping("/add")
+  @GetMapping("/rooms/add")
   public String addRoomPage() {
     return "room/addRoom";
   }
   // Admin
-  @PostMapping("/add")
+  @PostMapping("/rooms/add")
   public String addRoom(@ModelAttribute RoomRequest roomRequest) {
     this.roomService.createRoom(roomRequest);
     return "redirect:/";
   }
 
   // Admin And Customer
-  @GetMapping
+  @GetMapping("/rooms")
   public String getAllRooms(ModelMap modelMap){
     List<RoomResponse> rooms = this.roomService.getAllRooms();
     modelMap.put("rooms", rooms);
@@ -41,7 +40,7 @@ public class RoomController {
   }
 
   // Admin And Customer
-  @GetMapping("/description")
+  @GetMapping("/rooms/description")
   public String getRoomById(ModelMap modelMap, @RequestParam("id") long id) {
     Optional<RoomResponse> optionalRoomResponse = this.roomService.getRoomById(id);
     optionalRoomResponse.ifPresent(room -> modelMap.put("room", room));
@@ -49,7 +48,7 @@ public class RoomController {
   }
 
   // Admin
-  @GetMapping("/edit")
+  @GetMapping("/rooms/edit")
   public String updateRoomPage(@RequestParam("id") long id, ModelMap modelMap) {
     Optional<RoomResponse> roomResponse = this.roomService.getRoomById(id);
     roomResponse.ifPresent(room -> modelMap.put("room", room));
@@ -57,14 +56,14 @@ public class RoomController {
   }
 
   // Admin
-  @PostMapping("/edit")
+  @PostMapping("/rooms/edit")
   public String updateRoom(@ModelAttribute RoomRequest room) {
     this.roomService.updateRoom(room);
     return "redirect:/rooms";
   }
 
   // Admin
-  @GetMapping("/delete")
+  @GetMapping("/rooms/delete")
   public String deleteRoom(@RequestParam("id") long id) {
     this.roomService.deleteRoomById(id);
     return "redirect:/rooms";

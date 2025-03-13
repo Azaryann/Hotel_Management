@@ -15,13 +15,23 @@ public interface HotelService {
   Optional<HotelResponseDto> getHotelById(long hotelId);
   Page<HotelResponseDto> getAllHotels(int page, int size);
   Page<HotelResponseDto> filterHotel(
-      Boolean isFreeWiFi,
-      Boolean isSwimmingPool,
-      Boolean isParking,
-      Boolean isFitnessCenter,
-      List<Rate> rate,
-      int page,
-      int size
+          Boolean isFreeWiFi,
+          Boolean isSwimmingPool,
+          Boolean isParking,
+          Boolean isFitnessCenter,
+          List<Rate> rate,
+          int page,
+          int size
+  );
+  Page<HotelResponseDto> searchHotel(
+          Boolean isFreeWiFi,
+          Boolean isSwimmingPool,
+          Boolean isParking,
+          Boolean isFitnessCenter,
+          List<Rate> rate,
+          String name,
+          int page,
+          int size
   );
   void deleteHotel(long hotelId);
   Hotel updateHotel(HotelRequest hotelRequest);
