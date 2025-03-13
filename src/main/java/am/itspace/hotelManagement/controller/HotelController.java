@@ -27,7 +27,7 @@ public class HotelController {
     return "hotel/addHotel";
   }
 
-  @PostMapping("/hotels/add")
+  @PostMapping("/hotels/create")
   public String addHotel(@ModelAttribute HotelRequest hotelRequest) {
     this.hotelService.addHotel(hotelRequest);
     return "redirect:/";
