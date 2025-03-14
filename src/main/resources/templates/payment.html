@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Payment Form</title>
+</head>
+<body>
+<h1>Payment Form</h1>
+<form action="/pay" method="post">
+    <label for="days">Days:</label>
+    <input type="number" id="days" name="days" required>
+    <input type="hidden" name="roomId" th:value="${roomId}">
+    <br>
+    <label for="cardNumber">Card Number:</label>
+    <input type="text" id="cardNumber" name="cardNumber" required>
+    <br>
+    <label for="cvvNumber">CVV:</label>
+    <input type="text" id="cvvNumber" name="cvvNumber" required>
+    <br>
+    <button type="submit">Pay</button>
+</form>
+</body>
+</html>

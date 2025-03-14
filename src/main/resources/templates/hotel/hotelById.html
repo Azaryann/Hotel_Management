@@ -19,6 +19,7 @@
 <div th:each="room : ${hotel.getRooms()}">
     <h3 th:text="${'Room ID ' + room.getId()}"></h3>
     <img th:src="@{/get-image(img=${room.getImageUrls()[0]})}" style="width: 300px" alt="">
+    <a th:href="@{'/pay/' + ${room.id}}">Pay</a>
 </div>
 </body>
 </html>
