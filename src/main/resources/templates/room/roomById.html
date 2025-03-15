@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Single Room Page</title>
+</head>
+<body>
+<h2>Single Room Page</h2>
+<h2 th:text="${room.id}"></h2>
+<h4 th:text="${room.roomNumber}"></h4>
+<div th:each="image : ${room.imageUrls}">
+    <img th:src="@{/get-image(img=${image})}" style="width: 100px">
+</div>
+</body>
+</html>

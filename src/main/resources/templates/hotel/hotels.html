@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>hotel Page</title>
+</head>
+<body>
+<h2>hotels Page</h2>
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>hotel Name</th>
+        <th>Description</th>
+        <th>City</th>
+        <th>Country</th>
+        <th>Rooms Numbers</th>
+        <th>Room Image</th>
+        <th>Description</th>
+        <th>Action</th>
+    </tr>
+    <tr th:each="hotel : ${hotels}">
+        <th th:text="${hotel.id}"></th>
+        <td th:text="${hotel.name}"></td>
+        <td th:text="${hotel.description}"></td>
+        <td th:text="${hotel.city}"></td>
+        <td th:text="${hotel.country}"></td>
+        <!--            <td th:text="${hotel.rooms[0]}"></td>-->
+        <td><a th:href="@{/hotels/description(id=${hotel.id})}">Description</a></td>
+        <td> <a th:href="@{/hotels/edit(id=${hotel.id})}">Edit</a>
+            | <a th:href="@{/hotels/delete(id=${hotel.id})}">Delete</a> </td>
+    </tr>
+</table>
+
+<form action="hotels/filter" method="get">
+    <label>
+        <input type="checkbox" name="isFreeWiFi" value="true" th:checked="${isFreeWiFi}" />
+        Free WiFi
+    </label>
+    <label>
+        <input type="checkbox" name="isSwimmingPool" value="true" th:checked="${isSwimmingPool}" />
+        Swimming Pool
+    </label>
+    <label>
+        <input type="checkbox" name="isParking" value="true" th:checked="${isParking}" />
+        Parking
+    </label>
+    <label>
+        <input type="checkbox" name="isFitnessCenter" value="true" th:checked="${isFitnessCenter}" />
+        Fitness Center
+    </label>
+    <button type="submit">Filter</button>
+</form>
+
+
+<!--    </table>-->
+
+
+<div th:if="${hotels.totalPages > 0}" class="pagination"
+     th:each="pageNumber : ${pageNumbers}">
+    <a th:href="@{/hotels(pageSize=${hotels.size}, pageNumber=${pageNumber})}"
+       th:text="${pageNumber}"
+       th:class="${pageNumber == hotels.number + 1} ? active"></a>
+</div>
+</body>
+</html>

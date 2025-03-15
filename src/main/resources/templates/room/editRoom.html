@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Room Page</title>
+</head>
+<body>
+<h2>Edit Room Page</h2>
+<form action="/rooms/edit" method="post">
+    <input type="hidden" name="id" th:value="${room.id}">
+    Room Number: <input type="number" name="roomNumber" th:value="${room.roomNumber}"><br>
+    Price Per Night: <input type="number" name="pricePerNight" th:value="${room.pricePerNight}"><br>
+    <button type="submit">Edit</button>
+</form>
+</body>
+</html>
